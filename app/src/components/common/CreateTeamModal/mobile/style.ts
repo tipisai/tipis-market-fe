@@ -1,5 +1,5 @@
 import { SerializedStyles, css } from "@emotion/react"
-import { getColor } from "@illa-design/react"
+import { getColor } from "@illa-public/color-scheme"
 
 export const modalCloseIconStyle = css`
   position: absolute;

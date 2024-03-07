@@ -1,3 +1,5 @@
+import Icon from "@ant-design/icons"
+import { SearchIcon } from "@illa-public/icon"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   MixpanelTrackContext,
@@ -5,7 +7,6 @@ import {
 import { Input } from "antd"
 import { useTranslation } from "next-i18next"
 import { ChangeEvent, FC, useContext } from "react"
-import { SearchIcon } from "@illa-design/react"
 import { BannerProps } from "../interface"
 import {
   descriptionStyle,
@@ -60,7 +61,7 @@ export const BannerPC: FC<BannerProps> = ({
             marginRight: "8px",
           },
         }}
-        prefix={<SearchIcon css={searchIconStyle} />}
+        prefix={<Icon component={SearchIcon} css={searchIconStyle} />}
         value={search}
         placeholder={t("dashboard.search")}
         onChange={handleOnChange}

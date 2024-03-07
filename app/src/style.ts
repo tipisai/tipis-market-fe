@@ -89,7 +89,7 @@ export const pointerStyle = css`
 
 export const messageStyle = css`
   @media screen and (max-width: ${MOBILE_MAX_WIDTH}px) {
-    border-radius: 16rem;
+    border-radius: 8px;
   }
 `
 

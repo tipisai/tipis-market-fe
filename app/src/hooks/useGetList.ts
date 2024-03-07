@@ -1,6 +1,5 @@
-import { MarketAIAgent } from "@illa-public/market-agent"
 import { MarketAgentListData } from "@illa-public/market-agent/service"
-import { AppProductResponse } from "@illa-public/market-app/service/interface"
+import { MarketAIAgent } from "@illa-public/public-types"
 import { AxiosResponse } from "axios"
 import { useTranslation } from "next-i18next"
 import { useSearchParams } from "next/navigation"
@@ -118,9 +117,7 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
       }
 
       try {
-        let res:
-          | AxiosResponse<MarketAgentListData>
-          | AxiosResponse<AppProductResponse>
+        let res: AxiosResponse<MarketAgentListData>
 
         if (currentSort === PRODUCT_SORT_BY.STARRED) {
           res = await fetchStarAIgentList(requestParams, controller.signal)

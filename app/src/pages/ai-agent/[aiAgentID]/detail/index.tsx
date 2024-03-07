@@ -1,15 +1,15 @@
 import { css } from "@emotion/react"
-import { MarketAIAgent } from "@illa-public/market-agent"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   ILLA_MIXPANEL_MARKET_PAGE_NAME,
   MixpanelTrackProvider,
 } from "@illa-public/mixpanel-utils"
+import { MarketAIAgent } from "@illa-public/public-types"
 import { applyMobileStyle } from "@illa-public/utils"
-import type { GetServerSideProps, NextPage } from "next"
+import type { GetServerSideProps } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { AgentWrapper } from "@/components/ai-agent/AgentWrapper"
 import { InfoWrapper } from "@/components/ai-agent/InfoWrapper"
 import { SocialMedia } from "@/components/common/SocialMedia"
@@ -21,7 +21,7 @@ import {
   trackPageDurationStart,
 } from "@/utils/mixpanelHelper"
 
-export const wrapperStyle = css`
+const wrapperStyle = css`
   width: 100vw;
   height: 100%;
   display: flex;
@@ -31,7 +31,7 @@ export const wrapperStyle = css`
     padding: 0 20px;
   `)}
 `
-export const agentDetailStyle = css`
+const agentDetailStyle = css`
   display: flex;
   justify-content: center;
   width: 100%;
@@ -51,7 +51,7 @@ interface AgentDetailServerSideProps {
   detail: MarketAIAgent
 }
 
-const AgentDetailPage: NextPage<AgentDetailServerSideProps> = (props) => {
+const AgentDetailPage: FC<AgentDetailServerSideProps> = (props) => {
   const { detail } = props
   const [agentDetail, setAgentDetail] = useState<MarketAIAgent>(detail)
 

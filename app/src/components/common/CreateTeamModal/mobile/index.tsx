@@ -1,9 +1,10 @@
+import Icon from "@ant-design/icons"
+import { CloseIcon } from "@illa-public/icon"
 import { Button, Input, Modal } from "antd"
 import { useTranslation } from "next-i18next"
 import { FC } from "react"
 import { createPortal } from "react-dom"
 import { Controller, SubmitHandler, useFormContext } from "react-hook-form"
-import { CloseIcon } from "@illa-design/react"
 import {
   CreateTeamErrorMsg,
   CreateTeamFields,
@@ -42,7 +43,7 @@ const CreateTeamMobileModal: FC<CreateTeamMobileModalProps> = (props) => {
       closeIcon={false}
     >
       <div css={modalCloseIconStyle} onClick={onCancel}>
-        <CloseIcon />
+        <Icon component={CloseIcon} />
       </div>
       <form css={formStyle} onSubmit={handleSubmit(onSubmit)}>
         <header css={modalTitleStyle}>{t("homepage.team_modal.title")}</header>

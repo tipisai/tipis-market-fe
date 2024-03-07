@@ -1,8 +1,9 @@
+import Icon from "@ant-design/icons"
+import { PreviousIcon } from "@illa-public/icon"
 import { Button } from "antd"
 import { useTranslation } from "next-i18next"
 import Link from "next/link"
 import { FC, useContext } from "react"
-import { PreviousIcon } from "@illa-design/react"
 import { InfoContext } from "@/context/infoContext"
 import { NavHeaderOptions } from "../NavHeaderOptions"
 import {
@@ -22,7 +23,7 @@ export const DetailNav: FC = () => {
       <Link css={flexStyle} href={"/"}>
         <Button size="middle" type="text">
           <span css={backStyle}>
-            <PreviousIcon size="20" />
+            <Icon component={PreviousIcon} width="20px" height="20px" />
             <span css={backNameStyle}>{t("back")}</span>
           </span>
         </Button>

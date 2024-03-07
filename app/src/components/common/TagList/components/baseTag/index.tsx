@@ -1,7 +1,9 @@
+import Icon from "@ant-design/icons"
+import { getColor } from "@illa-public/color-scheme"
+import { CloseIcon } from "@illa-public/icon"
 import { Tag } from "antd"
 import { useTranslation } from "next-i18next"
 import { FC } from "react"
-import { CloseIcon, getColor } from "@illa-design/react"
 import { closeIconStyle, tagContentStyle } from "./style"
 
 interface BaseTagProps {
@@ -36,7 +38,7 @@ export const BaseTag: FC<BaseTagProps> = (props) => {
         <span>{t(name)}</span>
         {closable && (
           <span css={closeIconStyle} onClick={handleClose}>
-            <CloseIcon size="8" />
+            <Icon component={CloseIcon} width="8px" height="8px" />
           </span>
         )}
       </span>

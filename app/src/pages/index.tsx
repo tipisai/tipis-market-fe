@@ -5,11 +5,11 @@ import {
   MixpanelTrackProvider,
 } from "@illa-public/mixpanel-utils"
 import { applyMobileStyle } from "@illa-public/utils"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import { useEffect, useMemo } from "react"
+import { FC, useEffect, useMemo } from "react"
 import { AgentCardContainer } from "@/components/ai-agent/AgentCardContainer"
 import { FeatureLabelCard } from "@/components/ai-agent/FeatureLabel"
 import HomeStructuredData from "@/components/ai-agent/HomeStructuredData"
@@ -46,7 +46,7 @@ export const contentStyle = css`
   `)}
 `
 
-const AgentPage: NextPage<AgentPageProps> = (props) => {
+const AgentPage: FC<AgentPageProps> = (props) => {
   const { agent } = props
   const { t } = useTranslation()
 

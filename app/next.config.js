@@ -29,7 +29,7 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
-  transpilePackages: ["@illa-public/*", "@illa-design/react"],
+  transpilePackages: ["@illa-public/*"],
   env: getUsedEnv(process.env),
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>

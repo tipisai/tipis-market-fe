@@ -1,5 +1,4 @@
 import createCache from "@emotion/cache"
-import { px2Rem } from "../utils/stylis-plugin/px2rem"
 
 const isBrowser = typeof document !== "undefined"
 
@@ -16,11 +15,5 @@ export default function createEmotionCache() {
   return createCache({
     key: "illa-style",
     insertionPoint,
-    stylisPlugins: [
-      px2Rem({
-        unit: "rem",
-        remSize: 100,
-      }),
-    ],
   })
 }

@@ -1,3 +1,5 @@
+import Icon from "@ant-design/icons"
+import { SearchIcon } from "@illa-public/icon"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   MixpanelTrackContext,
@@ -6,7 +8,6 @@ import { Input } from "antd"
 import { useTranslation } from "next-i18next"
 import Link from "next/link"
 import { ChangeEvent, FC, useContext } from "react"
-import { SearchIcon } from "@illa-design/react"
 import Logo from "@/assets/public/illa-logo-puple.svg?react"
 import { NavHeaderOptions } from "@/components/common/PageNav/NavHeaderOptions"
 import { InfoContext } from "@/context/infoContext"
@@ -54,7 +55,7 @@ export const EntranceNavMobile: FC<EntranceNavProps> = (props) => {
       </Link>
       <div css={rightHeaderStyle}>
         <Input
-          prefix={<SearchIcon css={searchIconStyle} />}
+          prefix={<Icon component={SearchIcon} css={searchIconStyle} />}
           value={search}
           placeholder={t("dashboard.search")}
           size="middle"

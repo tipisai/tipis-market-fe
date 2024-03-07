@@ -1,9 +1,8 @@
 import { useNProgress } from "@tanem/react-nprogress"
+import { FC } from "react"
 import { barStyle, containerStyle, spinnerStyle } from "./style"
 
-const Loading: React.FC<{ isRouteChanging: boolean }> = ({
-  isRouteChanging,
-}) => {
+const Loading: FC<{ isRouteChanging: boolean }> = ({ isRouteChanging }) => {
   const { animationDuration, isFinished, progress } = useNProgress({
     isAnimating: isRouteChanging,
   })

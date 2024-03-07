@@ -1,10 +1,18 @@
+import Icon from "@ant-design/icons"
+import {
+  ForkIcon,
+  PlayFillIcon,
+  ShareIcon,
+  StarFillIcon,
+  StarOutlineIcon,
+} from "@illa-public/icon"
 import { MarketShareAgent } from "@illa-public/invite-modal"
-import { MarketAIAgent } from "@illa-public/market-agent"
 import { getAIAgentMarketplaceInfo } from "@illa-public/market-agent/service"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   MixpanelTrackContext,
 } from "@illa-public/mixpanel-utils"
+import { MarketAIAgent } from "@illa-public/public-types"
 import { TeamInfo, USER_ROLE } from "@illa-public/public-types"
 import { isBiggerThanTargetRole } from "@illa-public/user-role-utils"
 import {
@@ -18,13 +26,6 @@ import { useTranslation } from "next-i18next"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/router"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
-import {
-  DependencyIcon,
-  ForkIcon,
-  StarFillIcon,
-  StartOutlineIcon,
-  VideoPlayIcon,
-} from "@illa-design/react"
 import CreateTeamModal from "@/components/common/CreateTeamModal"
 import { OPERATE_TYPE } from "@/constants/page"
 import { useCheckLogin } from "@/hooks/useCheckLogin"
@@ -328,7 +329,7 @@ export const Operational: FC<OperationalProps> = ({
             type="primary"
             loading={runLoading}
             onClick={handleRunAgent}
-            icon={<VideoPlayIcon />}
+            icon={<Icon component={PlayFillIcon} />}
             style={{ justifyContent: "center" }}
           >
             <span>{t("detail.operation.run")}</span>
@@ -344,7 +345,7 @@ export const Operational: FC<OperationalProps> = ({
             size="large"
             onClick={handleForkAgent}
             loading={forkLoading}
-            icon={<ForkIcon />}
+            icon={<Icon component={ForkIcon} />}
             style={{ justifyContent: "center" }}
           >
             <span>{t("detail.operation.fork")}</span>
@@ -360,9 +361,9 @@ export const Operational: FC<OperationalProps> = ({
             onClick={star}
             icon={
               detail.marketplace?.isStarredByCurrentUser ? (
-                <StarFillIcon containerStyle={starStyle} />
+                <Icon component={StarFillIcon} css={starStyle} />
               ) : (
-                <StartOutlineIcon />
+                <Icon component={StarOutlineIcon} />
               )
             }
             style={{ justifyContent: "center" }}
@@ -377,7 +378,7 @@ export const Operational: FC<OperationalProps> = ({
           <Button
             size="large"
             onClick={openShapxodal}
-            icon={<DependencyIcon />}
+            icon={<Icon component={ShareIcon} />}
             style={{ justifyContent: "center" }}
           >
             <span>{t("detail.operation.share")}</span>

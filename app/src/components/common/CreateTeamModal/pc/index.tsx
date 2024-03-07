@@ -1,9 +1,10 @@
+import Icon from "@ant-design/icons"
+import { CloseIcon, WarningCircleIcon } from "@illa-public/icon"
 import { Button, ConfigProvider, Input, Modal } from "antd"
 import { useTranslation } from "next-i18next"
 import { FC } from "react"
 import { createPortal } from "react-dom"
 import { Controller, SubmitHandler, useFormContext } from "react-hook-form"
-import { CloseIcon, WarningCircleIcon } from "@illa-design/react"
 import {
   CreateTeamErrorMsg,
   CreateTeamFields,
@@ -59,7 +60,7 @@ const CreateTeamPCModal: FC<CreateTeamModalProps> = (props) => {
         centered
       >
         <div css={modalCloseIconStyle} onClick={onCancel}>
-          <CloseIcon size="12px" />
+          <Icon component={CloseIcon} width="12px" height="12px" />
         </div>
         <div css={modalDecorateLeftStyle} />
         <div css={modalDecorateRightStyle} />
@@ -90,7 +91,7 @@ const CreateTeamPCModal: FC<CreateTeamModalProps> = (props) => {
                 />
                 {(formState?.errors.name || errorMsg.name) && (
                   <div css={errorMsgStyle}>
-                    <WarningCircleIcon css={errorIconStyle} />
+                    <Icon component={WarningCircleIcon} css={errorIconStyle} />
                     {formState?.errors.name?.message || errorMsg.name}
                   </div>
                 )}
@@ -139,7 +140,7 @@ const CreateTeamPCModal: FC<CreateTeamModalProps> = (props) => {
                 />
                 {(formState?.errors.identifier || errorMsg.identifier) && (
                   <div css={errorMsgStyle}>
-                    <WarningCircleIcon css={errorIconStyle} />
+                    <Icon component={WarningCircleIcon} css={errorIconStyle} />
                     {formState?.errors.identifier?.message ||
                       errorMsg.identifier}
                   </div>

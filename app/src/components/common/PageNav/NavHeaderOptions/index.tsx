@@ -3,16 +3,15 @@ import {
   MixpanelTrackContext,
 } from "@illa-public/mixpanel-utils"
 import { CurrentUserInfo } from "@illa-public/public-types"
-import { isMobileByWindowSize } from "@illa-public/utils"
 import { ConfigProvider } from "antd"
 import { Button } from "antd"
 import { useTranslation } from "next-i18next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { FC, useContext, useEffect } from "react"
-import { useWindowSize } from "react-use"
 import AvatarSetting from "@/components/common/AvatarSetting"
 import { cloudUrl } from "@/constants/path"
+import { InfoContext } from "@/context/infoContext"
 import { useUtmParams } from "@/hooks/useUtmParams"
 import { GTagCategory, GTagEvent } from "@/interface/common"
 import { sendTagEvent } from "@/utils/gtag"
@@ -23,10 +22,9 @@ interface NavHeaderOptionsProps {
 }
 
 export const NavHeaderOptions: FC<NavHeaderOptionsProps> = ({ userInfo }) => {
-  const { width } = useWindowSize()
-  const isMobile = isMobileByWindowSize(width)
   const { t } = useTranslation()
   const { track } = useContext(MixpanelTrackContext)
+  const { isMobile } = useContext(InfoContext)
   const router = useRouter()
   const loginURL = useUtmParams(
     `${cloudUrl}?redirectURL=${encodeURIComponent(

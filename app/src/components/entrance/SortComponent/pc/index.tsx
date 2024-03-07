@@ -1,3 +1,4 @@
+import { getColor } from "@illa-public/color-scheme"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   MixpanelTrackContext,
@@ -5,7 +6,6 @@ import {
 import { ConfigProvider, Tabs } from "antd"
 import { useSearchParams } from "next/navigation"
 import { FC, useCallback, useContext } from "react"
-import { getColor } from "@illa-design/react"
 import { SingleTag, TagList } from "@/components/common/TagList"
 import { SEARCH_KEY } from "@/constants/page"
 import { GTagCategory, GTagEvent } from "@/interface/common"

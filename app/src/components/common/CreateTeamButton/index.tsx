@@ -1,3 +1,6 @@
+import Icon from "@ant-design/icons"
+import { getColor } from "@illa-public/color-scheme"
+import { AddIcon } from "@illa-public/icon"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   MixpanelTrackContext,
@@ -7,7 +10,6 @@ import { Button, ConfigProvider } from "antd"
 import { useTranslation } from "next-i18next"
 import { FC, useContext } from "react"
 import { useCallback, useState } from "react"
-import { AddIcon, getColor } from "@illa-design/react"
 import { AgentTeamSelectModal } from "@/components/ai-agent/TeamSelectModal"
 import CreateTeamModal from "@/components/common/CreateTeamModal"
 import { OPERATE_TYPE } from "@/constants/page"
@@ -88,7 +90,7 @@ export const CreateTeamButton: FC = () => {
         }}
         loading={loading}
         onClick={handleCreate}
-        icon={<AddIcon />}
+        icon={<Icon component={AddIcon} />}
       >
         {t("create_agent")}
       </Button>

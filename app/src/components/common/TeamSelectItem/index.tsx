@@ -1,7 +1,8 @@
+import { getColor } from "@illa-public/color-scheme"
 import { TeamInfo } from "@illa-public/public-types"
+import { Tag } from "antd"
 import { useTranslation } from "next-i18next"
 import { FC } from "react"
-import { Tag } from "@illa-design/react"
 import { isFreeLicense } from "@/utils/filterTeam"
 import { teamSelectItemContainerStyle } from "./style"
 
@@ -18,7 +19,21 @@ export const TeamSelectItem: FC<TeamSelectItemProps> = ({ teamInfo }) => {
   return (
     <div css={teamSelectItemContainerStyle}>
       <span>{teamInfo?.name}</span>
-      {isCurrentFree && <Tag colorScheme="purple">{t("free")}</Tag>}
+      {isCurrentFree && (
+        <Tag
+          style={{
+            padding: "1px 8px",
+            margin: 0,
+            borderRadius: "12px",
+            backgroundColor: getColor("techPurple", "08"),
+            color: getColor("techPurple", "03"),
+            border: `1px solid ${getColor("techPurple", "03")}`,
+            cursor: "pointer",
+          }}
+        >
+          {t("free")}
+        </Tag>
+      )}
     </div>
   )
 }

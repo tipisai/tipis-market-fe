@@ -1,10 +1,11 @@
-import { LoadingIcon, getColor } from "@illa-design/react"
-import { contentLoadingStyle } from "./style"
+import Icon from "@ant-design/icons"
+import { LoadingIcon } from "@illa-public/icon"
+import { contentLoadingStyle, loadingStyle } from "./style"
 
 export const ListLoading = () => {
   return (
     <div css={contentLoadingStyle}>
-      <LoadingIcon size="16" spin color={getColor("techPurple", "03")} />
+      <Icon component={LoadingIcon} css={loadingStyle} spin />
     </div>
   )
 }

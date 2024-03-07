@@ -66,6 +66,9 @@ importers:
 
   app:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.3.1
+        version: 5.3.1(react-dom@18.2.0)(react@18.2.0)
       '@emotion/cache':
         specifier: ^11.11.0
         version: 11.11.0
@@ -75,18 +78,15 @@ importers:
       '@emotion/server':
         specifier: ^11.11.0
         version: 11.11.0(@emotion/css@11.11.2)
-      '@illa-design/react':
-        specifier: workspace:*
-        version: link:../packages/illa-design/react
-      '@illa-design/table':
-        specifier: workspace:*
-        version: link:../packages/illa-design/table
       '@illa-public/avatar':
         specifier: workspace:*
         version: link:../packages/components/Avatar
       '@illa-public/code-editor':
         specifier: workspace:*
         version: link:../packages/components/CodeEditor
+      '@illa-public/color-scheme':
+        specifier: workspace:*
+        version: link:../packages/utils/colorScheme
       '@illa-public/icon':
         specifier: workspace:*
         version: link:../packages/components/Icon
@@ -102,9 +102,6 @@ importers:
       '@illa-public/market-agent':
         specifier: workspace:*
         version: link:../packages/components/MarketAgent
-      '@illa-public/market-app':
-        specifier: workspace:*
-        version: link:../packages/components/MarketApp
       '@illa-public/mixpanel-utils':
         specifier: workspace:*
         version: link:../packages/utils/MixpanelUtils
@@ -144,9 +141,6 @@ importers:
       i18next:
         specifier: ^23.7.6
         version: 23.7.8
-      i18next-browser-languagedetector:
-        specifier: ^7.1.0
-        version: 7.1.0
       next:
         specifier: 13.4.12
         version: 13.4.12(@babel/core@7.22.10)(react-dom@18.2.0)(react@18.2.0)
@@ -165,18 +159,6 @@ importers:
       react-i18next:
         specifier: ^13.5.0
         version: 13.5.0(i18next@23.7.8)(react-dom@18.2.0)(react@18.2.0)
-      react-use:
-        specifier: ^17.4.0
-        version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
-      react-virtualized-auto-sizer:
-        specifier: ^1.0.20
-        version: 1.0.20(react-dom@18.2.0)(react@18.2.0)
-      react-window:
-        specifier: ^1.8.9
-        version: 1.8.9(react-dom@18.2.0)(react@18.2.0)
-      stylis:
-        specifier: ^4.3.0
-        version: 4.3.0
       uuid:
         specifier: ^9.0.0
         version: 9.0.0
@@ -193,12 +175,6 @@ importers:
       '@types/qs':
         specifier: ^6.9.7
         version: 6.9.7
-      '@types/react-window':
-        specifier: ^1.8.5
-        version: 1.8.5
-      '@types/stylis':
-        specifier: ^4.2.0
-        version: 4.2.0
       eslint-config-illa:
         specifier: workspace:*
         version: link:../packages/devConfigs/eslint-config-illa
@@ -377,9 +353,9 @@ importers:
       '@emotion/react':
         specifier: ^11.11.1
         version: 11.11.1(@types/react@18.2.43)(react@18.2.0)
-      '@illa-design/react':
+      '@illa-public/color-scheme':
         specifier: workspace:*
-        version: link:../../illa-design/react
+        version: link:../../utils/colorScheme
       '@illa-public/dynamic-string':
         specifier: workspace:^
         version: link:../../utils/dynamicStringUtils
@@ -494,9 +470,6 @@ importers:
       '@emotion/react':
         specifier: ^11.11.1
         version: 11.11.1(@types/react@18.2.43)(react@18.2.0)
-      '@illa-design/react':
-        specifier: workspace:*
-        version: link:../../illa-design/react
       '@illa-public/public-types':
         specifier: workspace:*
         version: link:../../others/publicTypes
@@ -568,12 +541,6 @@ importers:
       '@illa-public/layout-auto-change':
         specifier: workspace:*
         version: link:../LayoutAutoChange
-      '@illa-public/market-agent':
-        specifier: workspace:*
-        version: link:../MarketAgent
-      '@illa-public/market-app':
-        specifier: workspace:*
-        version: link:../MarketApp
       '@illa-public/mixpanel-utils':
         specifier: workspace:*
         version: link:../../utils/MixpanelUtils
@@ -586,9 +553,6 @@ importers:
       '@illa-public/upgrade-modal':
         specifier: workspace:*
         version: link:../UpgradeModal
-      '@illa-public/usage-card':
-        specifier: workspace:*
-        version: link:../UsageCard
       '@illa-public/user-role-utils':
         specifier: workspace:*
         version: link:../../utils/UserRoleUtils
@@ -743,12 +707,18 @@ importers:
 
   packages/components/RecordEditor:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.3.1
+        version: 5.3.1(react-dom@18.2.0)(react@18.2.0)
       '@emotion/react':
         specifier: ^11.11.1
         version: 11.11.1(@types/react@18.2.43)(react@18.2.0)
-      '@illa-design/react':
+      '@illa-public/color-scheme':
         specifier: workspace:*
-        version: link:../../illa-design/react
+        version: link:../../utils/colorScheme
+      '@illa-public/icon':
+        specifier: workspace:*
+        version: link:../Icon
       '@illa-public/utils':
         specifier: workspace:*
         version: link:../../utils/public
@@ -758,6 +728,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.17
         version: 18.2.17
+      antd:
+        specifier: ^5.15.0
+        version: 5.15.1(react-dom@18.2.0)(react@18.2.0)
       i18next:
         specifier: ^23.7.6
         version: 23.7.8
@@ -875,9 +848,12 @@ importers:
       '@emotion/react':
         specifier: ^11.11.1
         version: 11.11.1(@types/react@18.2.43)(react@18.2.0)
-      '@illa-design/react':
+      '@illa-public/color-scheme':
         specifier: workspace:*
-        version: link:../../illa-design/react
+        version: link:../../utils/colorScheme
+      '@illa-public/icon':
+        specifier: workspace:*
+        version: link:../Icon
       '@illa-public/public-types':
         specifier: workspace:*
         version: link:../../others/publicTypes
@@ -890,6 +866,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.17
         version: 18.2.17
+      antd:
+        specifier: ^5.15.0
+        version: 5.15.1(react-dom@18.2.0)(react@18.2.0)
       i18next:
         specifier: ^23.7.6
         version: 23.7.8
@@ -1022,40 +1001,6 @@ importers:
       '@illa-public/icon':
         specifier: workspace:*
         version: link:../Icon
-      '@illa-public/utils':
-        specifier: workspace:*
-        version: link:../../utils/public
-      '@types/react':
-        specifier: ^18.2.38
-        version: 18.2.43
-      '@types/react-dom':
-        specifier: ^18.2.17
-        version: 18.2.17
-      i18next:
-        specifier: ^23.7.6
-        version: 23.7.8
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-      react-i18next:
-        specifier: ^13.5.0
-        version: 13.5.0(i18next@23.7.8)(react-dom@18.2.0)(react@18.2.0)
-    devDependencies:
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../devConfigs/tsconfig
-
-  packages/components/UsageCard:
-    dependencies:
-      '@emotion/react':
-        specifier: ^11.11.1
-        version: 11.11.1(@types/react@18.2.43)(react@18.2.0)
-      '@illa-design/react':
-        specifier: workspace:*
-        version: link:../../illa-design/react
       '@illa-public/utils':
         specifier: workspace:*
         version: link:../../utils/public
@@ -5809,12 +5754,6 @@ packages:
       '@types/react': 18.2.43
     dev: true
 
-  /@types/react-window@1.8.5:
-    resolution: {integrity: sha512-V9q3CvhC9Jk9bWBOysPGaWy/Z0lxYcTXLtLipkt2cnRj1JOSFNF7wqGpkScSXMgBwC+fnVRg/7shwgddBG5ICw==}
-    dependencies:
-      '@types/react': 18.2.43
-    dev: true
-
   /@types/react@18.2.43:
     resolution: {integrity: sha512-nvOV01ZdBdd/KW6FahSbcNplt2jCJfyWdTos61RYHV+FVv5L/g9AOX1bmbVcWcLFL8+KHQfh1zVIQrud6ihyQA==}
     dependencies:
@@ -5828,10 +5767,6 @@ packages:
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
     dev: false
-
-  /@types/stylis@4.2.0:
-    resolution: {integrity: sha512-n4sx2bqL0mW1tvDf/loQ+aMX7GQD3lc3fkCMC55VFNDu/vBOabO+LTIeXKM14xK0ppk5TUGcWRjiSpIlUpghKw==}
-    dev: true
 
   /@types/toposort@2.0.7:
     resolution: {integrity: sha512-sQNk65vbC36+UixCkcky+dCr7MlflHcVILg1FVGqlUntsLFv9xd9ToWIVko/gTuin+cVe16t+2YubEFkhnSuPQ==}
@@ -8247,12 +8182,6 @@ packages:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
     dev: false
 
-  /i18next-browser-languagedetector@7.1.0:
-    resolution: {integrity: sha512-cr2k7u1XJJ4HTOjM9GyOMtbOA47RtUoWRAtt52z43r3AoMs2StYKyjS3URPhzHaf+mn10hY9dZWamga5WPQjhA==}
-    dependencies:
-      '@babel/runtime': 7.22.6
-    dev: false
-
   /i18next-fs-backend@2.1.5:
     resolution: {integrity: sha512-7fgSH8nVhXSBYPHR/W3tEXXhcnwHwNiND4Dfx9knzPzdsWTUTL/TdDVV+DY0dL0asHKLbdoJaXS4LdVW6R8MVQ==}
     dev: false
@@ -9109,10 +9038,6 @@ packages:
   /mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
     dev: true
-
-  /memoize-one@5.2.1:
-    resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
-    dev: false
 
   /meow@12.1.1:
     resolution: {integrity: sha512-BhXM0Au22RwUneMPwSCnyhTOizdWoIEPU9sp0Aqa1PnDMR5Wv2FGXYDjuzJEIX+Eo2Rb8xuYe5jrnm5QowQFkw==}
@@ -10756,29 +10681,6 @@ packages:
       throttle-debounce: 3.0.1
       ts-easing: 0.2.0
       tslib: 2.6.1
-    dev: false
-
-  /react-virtualized-auto-sizer@1.0.20(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-OdIyHwj4S4wyhbKHOKM1wLSj/UDXm839Z3Cvfg2a9j+He6yDa6i5p0qQvEiCnyQlGO/HyfSnigQwuxvYalaAXA==}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /react-window@1.8.9(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-+Eqx/fj1Aa5WnhRfj9dJg4VYATGwIUP2ItwItiJ6zboKWA6EX3lYDAXfGF2hyNqplEprhbtjbipiADEcwQ823Q==}
-    engines: {node: '>8.0.0'}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
-    dependencies:
-      '@babel/runtime': 7.22.6
-      memoize-one: 5.2.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:
