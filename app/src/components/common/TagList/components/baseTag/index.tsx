@@ -1,0 +1,45 @@
+import { Tag } from "antd"
+import { useTranslation } from "next-i18next"
+import { FC } from "react"
+import { CloseIcon, getColor } from "@illa-design/react"
+import { closeIconStyle, tagContentStyle } from "./style"
+
+interface BaseTagProps {
+  name: string
+  isActive?: boolean
+  closable?: boolean
+  handleClose?: () => void
+  handleClick?: (name: string) => void
+}
+
+export const BaseTag: FC<BaseTagProps> = (props) => {
+  const { name, isActive, closable, handleClose, handleClick } = props
+  const { t } = useTranslation()
+  return (
+    <Tag
+      onClick={() => handleClick?.(name)}
+      style={{
+        padding: "1px 8px",
+        margin: 0,
+        borderRadius: "12px",
+        backgroundColor: isActive ? "#fff" : getColor("grayBlue", "09"),
+        color: isActive
+          ? getColor("techPurple", "03")
+          : getColor("grayBlue", "02"),
+        border: `1px solid ${
+          isActive ? getColor("techPurple", "03") : getColor("grayBlue", "09")
+        }`,
+        cursor: "pointer",
+      }}
+    >
+      <span css={tagContentStyle}>
+        <span>{t(name)}</span>
+        {closable && (
+          <span css={closeIconStyle} onClick={handleClose}>
+            <CloseIcon size="8" />
+          </span>
+        )}
+      </span>
+    </Tag>
+  )
+}

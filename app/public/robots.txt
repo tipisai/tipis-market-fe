@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://illa.ai
+
+# Sitemaps
+Sitemap: https://illa.ai/sitemap.xml
+Sitemap: https://illa.ai/server-sitemap-index.xml

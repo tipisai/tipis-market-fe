@@ -1,0 +1,137 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: docker:17.05.0-ce-git
+    resource_class: xlarge
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Clone repo
+          command: |
+            git submodule init
+            git submodule update
+            git submodule foreach git checkout ${CIRCLE_BRANCH}
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/illa-marketplace-frontend.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /illa-marketplace-frontend.tar | true
+      - run:
+          name: Env preprocess
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "main" ]; then
+              echo "Building for main branch"
+              echo "export ILLA_APP_ENV=production" >> "$BASH_ENV"
+            elif [ "${CIRCLE_BRANCH}" = "beta" ]; then
+              echo "Building for beta branch"
+              echo "export ILLA_APP_ENV=beta" >> "$BASH_ENV"
+            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+              echo "Building for develop branch"
+              echo "export ILLA_APP_ENV=test" >> "$BASH_ENV"
+            else
+              echo "Not a buildable branch"
+            fi
+      - run:
+          name: Env preprocess and build application Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "main" ]; then
+              echo "Building for main branch"
+              echo "export ILLA_APP_ENV=production" >> "$BASH_ENV"
+              docker build --cache-from=illa-marketplace-frontend -f Dockerfile -t illa-marketplace-frontend . --build-arg ILLA_CLOUD_URL="https://cloud.illacloud.com" --build-arg ILLA_BUILDER_URL="https://builder.illacloud.com" --build-arg ILLA_MARKET_URL="https://illa.ai" --build-arg ILLA_APP_ENV="production" --build-arg ILLA_API_BASE_URL="cloud-api.illacloud.com"
+            elif [ "${CIRCLE_BRANCH}" = "beta" ]; then
+              echo "Building for beta branch"
+              echo "export ILLA_APP_ENV=beta" >> "$BASH_ENV"
+              docker build --cache-from=illa-marketplace-frontend -f Dockerfile -t illa-marketplace-frontend . --build-arg ILLA_CLOUD_URL="https://cloud-beta.illacloud.com" --build-arg ILLA_BUILDER_URL="https://builder-beta.illacloud.com" --build-arg ILLA_MARKET_URL="https://beta.illa.ai" --build-arg ILLA_APP_ENV="beta" --build-arg ILLA_API_BASE_URL="cloud-api-beta.illacloud.com"
+            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+              echo "Building for develop branch"
+              echo "export ILLA_APP_ENV=test" >> "$BASH_ENV"
+              docker build --cache-from=illa-marketplace-frontend -f Dockerfile -t illa-marketplace-frontend . --build-arg ILLA_CLOUD_URL="https://cloud-test.illacloud.com" --build-arg ILLA_BUILDER_URL="https://builder-test.illacloud.com" --build-arg ILLA_MARKET_URL="https://test.illa.ai" --build-arg ILLA_APP_ENV="test" --build-arg ILLA_API_BASE_URL="cloud-api-test.illacloud.com"
+            else
+              echo "Not a buildable branch"
+            fi
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/illa-marketplace-frontend.tar illa-marketplace-frontend
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/illa-marketplace-frontend.tar
+      - deploy:
+          name: Push application Docker image
+          command: |
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PWD
+            docker tag illa-marketplace-frontend "illasoft/illa-marketplace-frontend:${CIRCLE_BRANCH}"
+            docker push "illasoft/illa-marketplace-frontend:${CIRCLE_BRANCH}"
+  deploy:
+    machine: # executor type
+      image: ubuntu-2004:202010-01
+    resource_class: medium
+    steps:
+      - run:
+          name: Download doctl & kubectl
+          command: |
+            sudo snap install doctl
+            sudo snap install kubectl --classic
+            doctl version
+      - run:
+          name: Setup kubectl
+          command: |
+            doctl auth init --access-token $DO_TOKEN
+            mkdir -p /home/circleci/.kube
+            sudo snap connect doctl:kube-config
+            doctl kubernetes cluster kubeconfig save $DO_CLUSTER
+            kubectl version
+      - run:
+          name: Download deployment configs
+          command: |
+            git clone $DEPLOY_REPO
+            if [ "${CIRCLE_BRANCH}" = "main" ]; then
+              echo "Deploying for main branch"
+              echo "export NS=production" >> "$BASH_ENV"
+              echo "export CFG_DIR=${DEPLOY_PRO_DIR}" >> "$BASH_ENV"
+            elif [ "${CIRCLE_BRANCH}" = "beta" ]; then
+              echo "Deploying for beta branch"
+              echo "export NS=beta" >> "$BASH_ENV"
+              echo "export CFG_DIR=${DEPLOY_BETA_DIR}" >> "$BASH_ENV"
+            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+              echo "Deploying for develop branch"
+              echo "export NS=test" >> "$BASH_ENV"
+              echo "export CFG_DIR=${DEPLOY_TEST_DIR}" >> "$BASH_ENV"
+            else
+              echo "Not a deployable branch"
+            fi
+      - run:
+          name: Deploy different branches
+          command: |
+            echo "Deploying to ${NS} namespace"
+            cd ${CFG_DIR}
+            pwd
+            kubectl delete pod -n ${NS} -l repo=illa-marketplace-frontend
+            kubectl apply -f ./illa-marketplace-frontend/ -n ${NS}
+
+workflows:
+  illa-marketplace-frontend:
+    when:
+      or:
+        - equal: [main, << pipeline.git.branch >>]
+        - equal: [beta, << pipeline.git.branch >>]
+        - equal: [develop, << pipeline.git.branch >>]
+    jobs:
+      - build:
+          context:
+            - org-global
+      - deploy:
+          context:
+            - org-global
+          requires:
+            - build
