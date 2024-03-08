@@ -1,5 +1,6 @@
 import { CodeEditor } from "@illa-public/code-editor"
-import { MarketAIAgent, getLLM } from "@illa-public/market-agent"
+import { getLLM } from "@illa-public/market-agent"
+import { MarketAIAgent } from "@illa-public/public-types"
 import { useTranslation } from "next-i18next"
 import dynamic from "next/dynamic"
 import Link from "next/link"

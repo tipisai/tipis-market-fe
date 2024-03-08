@@ -1,5 +1,5 @@
 import { Avatar } from "@illa-public/avatar"
-import { MarketAIAgent } from "@illa-public/market-agent"
+import { MarketAIAgent } from "@illa-public/public-types"
 import { Tooltip } from "antd"
 import { useTranslation } from "next-i18next"
 import { FC, useRef } from "react"

@@ -140,7 +140,6 @@ function MyApp({
       <ConfigProvider theme={defaultThemeToken}>
         <CacheProvider value={emotionCache}>
           <Global styles={globalStyles} />
-          {/* <MessageGroup /> */}
           <InfoProvider userInfo={userInfo} isMobile={isMobile}>
             <AntdApp component={false}>
               {getLayout(<Component {...pageProps} />)}

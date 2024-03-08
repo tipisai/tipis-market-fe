@@ -38,7 +38,7 @@ export const BaseTag: FC<BaseTagProps> = (props) => {
         <span>{t(name)}</span>
         {closable && (
           <span css={closeIconStyle} onClick={handleClose}>
-            <Icon component={CloseIcon} width="8px" height="8px" />
+            <Icon component={CloseIcon} />
           </span>
         )}
       </span>

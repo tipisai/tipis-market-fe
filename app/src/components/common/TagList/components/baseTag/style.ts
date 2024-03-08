@@ -19,5 +19,6 @@ export const closeIconStyle = css`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  font-size: 8px;
   color: ${getColor("techPurple", "03")};
 `
