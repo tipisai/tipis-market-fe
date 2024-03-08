@@ -1,4 +1,5 @@
 import Icon from "@ant-design/icons"
+import { getColor } from "@illa-public/color-scheme"
 import { CloseIcon } from "@illa-public/icon"
 import { Button, Input, Modal } from "antd"
 import { useTranslation } from "next-i18next"
@@ -38,9 +39,26 @@ const CreateTeamMobileModal: FC<CreateTeamMobileModalProps> = (props) => {
     <Modal
       footer={false}
       open={visible}
+      width="100%"
       maskClosable={false}
       onCancel={onCancel}
       closeIcon={false}
+      centered
+      style={{
+        maxWidth: 400,
+      }}
+      styles={{
+        content: {
+          boxShadow: "0 4px 16px rgb(0 0 0 / 8%)",
+          border: `1px solid ${getColor("grayBlue", "08")}`,
+          overflow: "hidden",
+          borderRadius: 8,
+        },
+        mask: {
+          backgroundColor: getColor("white", "05"),
+          backdropFilter: "blur(5px)",
+        },
+      }}
     >
       <div css={modalCloseIconStyle} onClick={onCancel}>
         <Icon component={CloseIcon} />

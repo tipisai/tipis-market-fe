@@ -27,8 +27,6 @@ export const TeamSelectItem: FC<TeamSelectItemProps> = ({ teamInfo }) => {
             borderRadius: "12px",
             backgroundColor: getColor("techPurple", "08"),
             color: getColor("techPurple", "03"),
-            border: `1px solid ${getColor("techPurple", "03")}`,
-            cursor: "pointer",
           }}
         >
           {t("free")}

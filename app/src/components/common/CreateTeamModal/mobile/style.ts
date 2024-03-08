@@ -7,12 +7,13 @@ export const modalCloseIconStyle = css`
   height: 24px;
   text-align: center;
   top: 12px;
-  right: 8px;
+  right: 12px;
   font-size: 9px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 12px;
   color: ${getColor("grayBlue", "02")};
 `
 

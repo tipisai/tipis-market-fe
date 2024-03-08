@@ -1,16 +1,6 @@
 import { SerializedStyles, css } from "@emotion/react"
 import { getColor } from "@illa-public/color-scheme"
 
-export const modalContentStyle = {
-  border: "unset",
-  background: '#f7fff9 url("/create-team-modal/create-team-bg.svg") no-repeat',
-  backgroundPosition: "bottom",
-  width: "746px",
-  minHeight: "540px",
-  borderRadius: "16px",
-  boxShadow: "0px 4px 16px rgb(0 0 0 / 8%)",
-}
-
 export const modalCloseIconStyle = css`
   position: absolute;
   width: 24px;
@@ -23,6 +13,7 @@ export const modalCloseIconStyle = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 12px;
   color: ${getColor("grayBlue", "02")};
 `
 

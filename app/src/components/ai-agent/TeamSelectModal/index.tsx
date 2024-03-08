@@ -1,3 +1,6 @@
+import Icon from "@ant-design/icons"
+import { getColor } from "@illa-public/color-scheme"
+import { CloseIcon } from "@illa-public/icon"
 import {
   ILLA_MIXPANEL_EVENT_TYPE,
   MixpanelTrackContext,
@@ -18,7 +21,12 @@ import { TeamSelectItem } from "@/components/common/TeamSelectItem"
 import { ModalActionType } from "@/interface/common"
 import { forkAIAgentToTeam } from "@/services/Client/aiAgent"
 import { toCreateAgent, toEditAgent, toRunAgent } from "@/utils/navigate"
-import { actionAreaStyle, contentStyle, titleStyle } from "./style"
+import {
+  actionAreaStyle,
+  contentStyle,
+  modalCloseIconStyle,
+  titleStyle,
+} from "./style"
 
 interface TeamSelectModalProps {
   ownerTeamIdentifier?: string
@@ -132,8 +140,29 @@ export const AgentTeamSelectModal: FC<TeamSelectModalProps> = (props) => {
       footer={false}
       open={visible}
       centered
+      styles={{
+        content: {
+          width: "100%",
+          maxWidth: 400,
+          boxShadow: "0 4px 16px rgb(0 0 0 / 8%)",
+          border: `1px solid ${getColor("grayBlue", "08")}`,
+          overflow: "hidden",
+          borderRadius: 8,
+        },
+        mask: {
+          backgroundColor: getColor("white", "05"),
+          backdropFilter: "blur(5px)",
+        },
+        footer: {
+          margin: 0,
+        },
+      }}
+      closeIcon={false}
       onCancel={onCancel}
     >
+      <div css={modalCloseIconStyle} onClick={onCancel}>
+        <Icon component={CloseIcon} />
+      </div>
       <div css={contentStyle}>
         <div css={titleStyle}>
           {actionType === "run"
