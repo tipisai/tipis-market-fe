@@ -6,12 +6,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": [
-      "node",
-      "@illa-design/table/src/react-table.d.ts",
-      "@svgr/webpack",
-      "@types/gtag.js"
-    ],
+    "types": ["node", "@svgr/webpack", "@types/gtag.js"],
     "incremental": true,
     "jsx": "preserve"
   },
