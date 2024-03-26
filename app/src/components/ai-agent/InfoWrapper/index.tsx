@@ -1,4 +1,4 @@
-import { MarketAIAgent } from "@illa-public/market-agent"
+import { MarketAIAgent } from "@illa-public/public-types"
 import { useRouter } from "next/router"
 import { FC, useContext, useEffect, useState } from "react"
 import { SubmitCard } from "@/components/common/SubmitCard"

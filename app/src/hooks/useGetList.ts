@@ -198,7 +198,6 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
       setReLoading(true)
       marketListPage.current = 1
       const res = await getMarketList({ sortedBy: value as PRODUCT_SORT_BY })
-      console.log(res, value, search)
       if (
         (!res || res.length === 0) &&
         search &&
