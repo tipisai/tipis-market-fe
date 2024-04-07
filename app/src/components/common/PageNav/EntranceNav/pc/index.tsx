@@ -1,7 +1,3 @@
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import Link from "next/link"
 import { FC, useContext } from "react"
 import Logo from "@/assets/public/illa-logo-puple.svg?react"
@@ -20,10 +16,8 @@ import {
 export const EntranceNavPC: FC<EntranceNavProps> = () => {
   const { userInfo } = useContext(InfoContext)
 
-  const { track } = useContext(MixpanelTrackContext)
-
   const handleLogoClick = () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "logo" })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "logo" })
   }
 
   return (

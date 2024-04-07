@@ -1,8 +1,4 @@
 import { Avatar } from "@illa-public/avatar"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import Link from "next/link"
 import { FC, useContext } from "react"
 import { InfoContext } from "@/context/infoContext"
@@ -10,10 +6,9 @@ import { MediaLayout } from "@/layout/mediaLayout"
 
 const AvatarSetting: FC = () => {
   const { userInfo } = useContext(InfoContext)
-  const { track } = useContext(MixpanelTrackContext)
 
   const handleClickReport = () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "avatar" })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "avatar" })
   }
 
   return (

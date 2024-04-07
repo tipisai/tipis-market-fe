@@ -4,8 +4,8 @@ import { FC, useContext, useEffect, useState } from "react"
 import { SubmitCard } from "@/components/common/SubmitCard"
 import { InfoContext } from "@/context/infoContext"
 import { fetchIsAgentOwner } from "@/services/Client/aiAgent"
+import { Operational } from "./Actions"
 import { ContributeCard } from "./ContributeCard"
-import { Operational } from "./Operational"
 import {
   agentDescriptionStyle,
   agentIconStyle,

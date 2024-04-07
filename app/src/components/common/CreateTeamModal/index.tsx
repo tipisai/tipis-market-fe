@@ -1,12 +1,8 @@
 import { ERROR_FLAG, isILLAAPiError } from "@illa-public/illa-net"
 import { LayoutAutoChange } from "@illa-public/layout-auto-change"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import { App } from "antd"
 import { useTranslation } from "next-i18next"
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import {
   CreateTeamErrorMsg,
@@ -42,7 +38,6 @@ const CreateTeamModal: FC<CreateTeamModalProps> = (props) => {
   })
   const [loading, setLoading] = useState(false)
   const [createErrorMsg, _setCreateErrorMsg] = useState<CreateTeamErrorMsg>({})
-  const { track } = useContext(MixpanelTrackContext)
 
   const onCloseCreateModal = () => {
     onCancel?.()
@@ -50,11 +45,11 @@ const CreateTeamModal: FC<CreateTeamModalProps> = (props) => {
   }
 
   const onSubmitCreateTeam: SubmitHandler<CreateTeamFields> = async (data) => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-      element: "create_team_modal",
-      parameter1: actionType,
-      parameter5: ID,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "create_team_modal",
+    //   parameter1: actionType,
+    //   parameter5: ID,
+    // })
     setLoading(true)
     try {
       const res = await createTeam(data)
@@ -87,13 +82,13 @@ const CreateTeamModal: FC<CreateTeamModalProps> = (props) => {
 
   useEffect(() => {
     if (visible) {
-      track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
-        element: "create_team_modal",
-        parameter1: actionType,
-        parameter5: ID,
-      })
+      // track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
+      //   element: "create_team_modal",
+      //   parameter1: actionType,
+      //   parameter5: ID,
+      // })
     }
-  }, [ID, actionType, track, visible])
+  }, [visible])
 
   return (
     <FormProvider {...createFormProps}>

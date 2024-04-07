@@ -1,14 +1,8 @@
 import Icon from "@ant-design/icons"
-import { getColor } from "@illa-public/color-scheme"
 import { AddIcon } from "@illa-public/icon"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import { TeamInfo } from "@illa-public/public-types"
-import { Button, ConfigProvider } from "antd"
 import { useTranslation } from "next-i18next"
-import { FC, useContext } from "react"
+import { FC } from "react"
 import { useCallback, useState } from "react"
 import { AgentTeamSelectModal } from "@/components/ai-agent/TeamSelectModal"
 import CreateTeamModal from "@/components/common/CreateTeamModal"
@@ -17,6 +11,7 @@ import { useCheckLogin } from "@/hooks/useCheckLogin"
 import { fetchTeamsInfo } from "@/services/Client/team"
 import { filterTeam } from "@/utils/filterTeam"
 import { toCreateAgent } from "@/utils/navigate"
+import BlackButton from "../BlackButton"
 
 export const CreateTeamButton: FC = () => {
   const { t } = useTranslation()
@@ -26,7 +21,6 @@ export const CreateTeamButton: FC = () => {
 
   const [teamSelectVisible, setTeamSelectVisible] = useState(false)
   const [createTeamVisible, setCreateTeamVisible] = useState(false)
-  const { track } = useContext(MixpanelTrackContext)
 
   const closeTeamSelectModal = () => {
     setTeamSelectVisible(false)
@@ -37,7 +31,7 @@ export const CreateTeamButton: FC = () => {
   }
 
   const handleCreate = useCallback(async () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "create" })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "create" })
     const isLogin = checkLoginAndRedirect(OPERATE_TYPE.CREATE)
     setLoading(true)
     if (!isLogin) return
@@ -57,32 +51,15 @@ export const CreateTeamButton: FC = () => {
     } else {
       setTeamSelectVisible(true)
     }
-  }, [checkLoginAndRedirect, track])
+  }, [checkLoginAndRedirect])
 
   const handleCreateTeamSuccess = useCallback((teamIdentifier: string) => {
     toCreateAgent(teamIdentifier)
   }, [])
 
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Button: {
-            contentFontSizeLG: 14,
-            defaultBg: getColor("grayBlue", "02"),
-            defaultColor: "#fff",
-            defaultBorderColor: getColor("grayBlue", "02"),
-            defaultActiveBorderColor: getColor("grayBlue", "01"),
-            defaultActiveBg: getColor("grayBlue", "01"),
-            defaultActiveColor: "#fff",
-            defaultHoverBg: getColor("grayBlue", "03"),
-            defaultHoverColor: "#fff",
-            defaultHoverBorderColor: getColor("grayBlue", "03"),
-          },
-        },
-      }}
-    >
-      <Button
+    <>
+      <BlackButton
         type="default"
         size="large"
         style={{
@@ -93,7 +70,7 @@ export const CreateTeamButton: FC = () => {
         icon={<Icon component={AddIcon} />}
       >
         {t("create_agent")}
-      </Button>
+      </BlackButton>
       <AgentTeamSelectModal
         actionType="create"
         teamItems={teamItems}
@@ -106,7 +83,7 @@ export const CreateTeamButton: FC = () => {
         onCancel={closeCreateTeamModal}
         onCreateTeamSuccess={handleCreateTeamSuccess}
       />
-    </ConfigProvider>
+    </>
   )
 }
 

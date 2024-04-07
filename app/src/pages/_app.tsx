@@ -1,17 +1,7 @@
 import { CacheProvider, EmotionCache, Global } from "@emotion/react"
-import {
-  ILLAMixpanel,
-  ILLA_MIXPANEL_EVENT_TYPE,
-  ILLA_MIXPANEL_PUBLIC_PAGE_NAME,
-} from "@illa-public/mixpanel-utils"
 import { CurrentUserInfo } from "@illa-public/public-types"
-import {
-  initDateReport,
-  isServerRender,
-  sendConfigEvent,
-} from "@illa-public/utils"
-import { App as AntdApp } from "antd"
-import { ConfigProvider } from "antd"
+import { initGTMConfig } from "@illa-public/utils"
+import { App as AntdApp, ConfigProvider, ThemeConfig } from "antd"
 import { appWithTranslation } from "next-i18next"
 import { AppContext } from "next/app"
 import Head from "next/head"
@@ -24,7 +14,6 @@ import { InfoProvider } from "@/context/infoContext"
 import { fetchUserInfoByToken } from "@/services/Server/users"
 import { globalStyles } from "@/style"
 import { AppPropsWithLayout } from "@/types/nextjs"
-import { track } from "@/utils/mixpanelHelper"
 import Loading from "../components/PageLoading"
 import createEmotionCache from "../shared/renderer"
 
@@ -48,7 +37,7 @@ function MyApp({
   // Use the layout defined at the page level, if available
   const router = useRouter()
   useEffect(() => {
-    initDateReport()
+    initGTMConfig()
   }, [])
 
   const [state, setState] = useState({
@@ -56,34 +45,23 @@ function MyApp({
     loadingKey: 0,
   })
 
-  if (!isServerRender) {
-    ILLAMixpanel.setDeviceID()
-  }
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     TipisTrack.identify(userInfo.userID, {
+  //       nickname: userInfo.nickname,
+  //       email: userInfo.email,
+  //       language: userInfo.language,
+  //     })
+  //   } else {
+  //     TipisTrack.reset()
+  //   }
+  // }, [userInfo])
 
   useEffect(() => {
-    if (userInfo) {
-      ILLAMixpanel.setUserID(userInfo.userID)
-      const reportedUserInfo: Record<string, any> = {}
-      Object.entries(userInfo).forEach(([key, value]) => {
-        reportedUserInfo[`illa_${key}`] = value
-      })
-      ILLAMixpanel.setUserProperties(reportedUserInfo)
-    } else {
-      ILLAMixpanel.reset()
-    }
-  }, [userInfo])
-
-  useEffect(() => {
-    if (userInfo?.userID) {
-      sendConfigEvent(userInfo?.userID)
-    }
-  }, [userInfo?.userID])
-
-  useEffect(() => {
-    track(
-      ILLA_MIXPANEL_EVENT_TYPE.ILLA_ACTIVE,
-      ILLA_MIXPANEL_PUBLIC_PAGE_NAME.PLACEHOLDER,
-    )
+    // track(
+    //   ILLA_MIXPANEL_EVENT_TYPE.ILLA_ACTIVE,
+    //   ILLA_MIXPANEL_PUBLIC_PAGE_NAME.PLACEHOLDER,
+    // )
   }, [])
 
   useEffect(() => {
@@ -121,7 +99,7 @@ function MyApp({
     }
   }, [router.events])
   const getLayout = Component.getLayout || ((page) => page)
-
+  // PostHogProvider apiKey={process.env.ILLA_POSTHOG_KEY}
   return (
     <>
       <Head>
@@ -137,7 +115,7 @@ function MyApp({
         />
       </Head>
       <Loading isRouteChanging={state.isRouteChanging} key={state.loadingKey} />
-      <ConfigProvider theme={defaultThemeToken}>
+      <ConfigProvider theme={defaultThemeToken as ThemeConfig}>
         <CacheProvider value={emotionCache}>
           <Global styles={globalStyles} />
           <InfoProvider userInfo={userInfo} isMobile={isMobile}>
@@ -156,35 +134,35 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const userAgent = appContext.ctx.req?.headers?.["user-agent"] || ""
   const token = appContext?.router?.query?.token
 
-  let ILLA_LANG = "en-US"
-  let ILLA_TOKEN = ""
+  let TIPIS_LANG = "en-US"
+  let TIPIS_TOKEN = ""
   if (cookie) {
     const language = cookie
       .split(";")
-      .find((c) => c.trim().startsWith("ILLA_LANG"))
+      .find((c) => c.trim().startsWith("TIPIS_LANG"))
     if (language) {
-      ILLA_LANG = language.split("=")[1]
+      TIPIS_LANG = language.split("=")[1]
     }
     const token = cookie
       .split(";")
-      .find((c) => c.trim().startsWith("ILLA_TOKEN"))
+      .find((c) => c.trim().startsWith("TIPIS_TOKEN"))
     if (token) {
-      ILLA_TOKEN = token.split("=")[1]
+      TIPIS_TOKEN = token.split("=")[1]
     }
   }
   if (token && typeof token === "string") {
-    ILLA_TOKEN = token
+    TIPIS_TOKEN = token
   }
 
   let userInfo: CurrentUserInfo | undefined
   try {
-    userInfo = await fetchUserInfoByToken(ILLA_TOKEN as string)
+    userInfo = await fetchUserInfoByToken(TIPIS_TOKEN as string)
   } catch (e) {
     userInfo = undefined
   }
 
   return {
-    language: ILLA_LANG,
+    language: TIPIS_LANG,
     userInfo,
     isMobile: MOBILE_USER_AGENT.test(userAgent),
   }

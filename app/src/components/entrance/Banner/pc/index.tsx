@@ -1,12 +1,8 @@
 import Icon from "@ant-design/icons"
 import { SearchIcon } from "@illa-public/icon"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import { Input } from "antd"
 import { useTranslation } from "next-i18next"
-import { ChangeEvent, FC, useContext } from "react"
+import { ChangeEvent, FC } from "react"
 import { BannerProps } from "../interface"
 import {
   descriptionStyle,
@@ -27,19 +23,17 @@ export const BannerPC: FC<BannerProps> = ({
 }) => {
   const { t } = useTranslation()
 
-  const { track } = useContext(MixpanelTrackContext)
-
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
-    track(ILLA_MIXPANEL_EVENT_TYPE.REQUEST, {
-      element: "search",
-      parameter1: val,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.REQUEST, {
+    //   element: "search",
+    //   parameter1: val,
+    // })
     handleSearchChange?.(val)
   }
 
   const handleOnFocus = () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.FOCUS, { element: "search" })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.FOCUS, { element: "search" })
   }
   return (
     <div css={headerStyle}>

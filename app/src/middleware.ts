@@ -12,7 +12,7 @@ const getIsInternalRoute = (url: string) => {
 export async function middleware(request: NextRequest) {
   if (getIsInternalRoute(request.nextUrl.pathname)) return
   const { searchParams } = request.nextUrl
-  const cookieToken = request.cookies.get("ILLA_TOKEN")
+  const cookieToken = request.cookies.get("TIPIS_TOKEN")
   let token = searchParams.get("token")
   const currentLocal = request.nextUrl.locale
   let lang: string = "en-US"
@@ -35,19 +35,19 @@ export async function middleware(request: NextRequest) {
         currentLocal !== lang
           ? NextResponse.redirect(request.nextUrl)
           : NextResponse.next()
-      response.cookies.set("ILLA_TOKEN", token)
-      response.cookies.set("ILLA_LANG", lang)
+      response.cookies.set("TIPIS_TOKEN", token)
+      response.cookies.set("TIPIS_LANG", lang)
       return response
     } catch (e) {
-      const cookieLang = request.cookies.get("ILLA_LANG")
+      const cookieLang = request.cookies.get("TIPIS_LANG")
       if (cookieLang && cookieLang.value) {
         lang = cookieLang.value
       }
       if (currentLocal !== lang) {
         request.nextUrl.locale = lang
         const response = NextResponse.redirect(request.nextUrl)
-        response.cookies.delete("ILLA_TOKEN")
-        response.cookies.set("ILLA_LANG", lang)
+        response.cookies.delete("TIPIS_TOKEN")
+        response.cookies.set("TIPIS_LANG", lang)
         return response
       }
     }
@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
     if (currentLocal !== browserLang) {
       request.nextUrl.locale = browserLang
       const response = NextResponse.redirect(request.nextUrl)
-      response.cookies.set("ILLA_LANG", browserLang)
+      response.cookies.set("TIPIS_LANG", browserLang)
       return response
     }
   }

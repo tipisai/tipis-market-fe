@@ -1,9 +1,4 @@
 import { css } from "@emotion/react"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  ILLA_MIXPANEL_MARKET_PAGE_NAME,
-  MixpanelTrackProvider,
-} from "@illa-public/mixpanel-utils"
 import { applyMobileStyle } from "@illa-public/utils"
 import { GetServerSideProps } from "next"
 import { useTranslation } from "next-i18next"
@@ -25,11 +20,6 @@ import { PRODUCT_SORT_BY } from "@/interface/common"
 import { AgentPageProps } from "@/interface/pageIndex"
 import Layout from "@/layout/entrancePage"
 import { fetchAIAgentList } from "@/services/Server/agent"
-import {
-  track,
-  trackPageDurationEnd,
-  trackPageDurationStart,
-} from "@/utils/mixpanelHelper"
 
 export const contentStyle = css`
   display: flex;
@@ -64,82 +54,77 @@ const AgentPage: FC<AgentPageProps> = (props) => {
   )
 
   useEffect(() => {
-    trackPageDurationStart()
+    // trackPageDurationStart()
     return () => {
-      trackPageDurationEnd(
-        ILLA_MIXPANEL_MARKET_PAGE_NAME.COMMUNITY_AGENT_HOMEPAGE,
-      )
+      // trackPageDurationEnd(
+      //   ILLA_MIXPANEL_MARKET_PAGE_NAME.COMMUNITY_AGENT_HOMEPAGE,
+      // )
     }
   }, [])
 
   useEffect(() => {
-    track(
-      ILLA_MIXPANEL_EVENT_TYPE.VISIT,
-      ILLA_MIXPANEL_MARKET_PAGE_NAME.COMMUNITY_AGENT_HOMEPAGE,
-    )
+    // track(
+    //   ILLA_MIXPANEL_EVENT_TYPE.VISIT,
+    //   ILLA_MIXPANEL_MARKET_PAGE_NAME.COMMUNITY_AGENT_HOMEPAGE,
+    // )
   }, [])
 
   return (
-    <MixpanelTrackProvider
-      pageName={ILLA_MIXPANEL_MARKET_PAGE_NAME.COMMUNITY_AGENT_HOMEPAGE}
-      basicTrack={track}
+    <Layout
+      handleSearchChange={getListProps?.handleSearchChange}
+      onSearch={getListProps?.onSearch}
+      search={getListProps?.search}
     >
-      <Layout
-        handleSearchChange={getListProps?.handleSearchChange}
-        onSearch={getListProps?.onSearch}
-        search={getListProps?.search}
-      >
-        <Head>
-          <title>{t("meta.meta-title.ai-agent")}</title>
-          <meta
-            name="description"
-            content={t("meta.meta-description.ai-agent") || ""}
-          />
-          <meta name="keywords" content={t("keywords_agent") || ""} />
-        </Head>
-        <HomeStructuredData />
-        <SocialMedia
-          title={t("meta.meta-title.ai-agent")}
-          description={t("meta.meta-description.ai-agent")}
+      <Head>
+        <title>{t("meta.meta-title.ai-agent")}</title>
+        <meta
+          name="description"
+          content={t("meta.meta-description.ai-agent") || ""}
         />
-        <div css={contentStyle} onScroll={getListProps?.handleCardScroll}>
-          <Banner
-            {...bannerContent}
-            search={getListProps?.search}
-            handleSearchChange={getListProps?.handleSearchChange}
-            onSearch={getListProps?.onSearch}
+        <meta name="keywords" content={t("keywords_agent") || ""} />
+      </Head>
+      <HomeStructuredData />
+      <SocialMedia
+        title={t("meta.meta-title.ai-agent")}
+        description={t("meta.meta-description.ai-agent")}
+      />
+      <div css={contentStyle} onScroll={getListProps?.handleCardScroll}>
+        <Banner
+          {...bannerContent}
+          search={getListProps?.search}
+          handleSearchChange={getListProps?.handleSearchChange}
+          onSearch={getListProps?.onSearch}
+        />
+        <SortComponent
+          sort={getListProps?.sort}
+          sortOptions={getListProps?.sortOptions}
+          handleSortChange={getListProps?.handleSortChange}
+          activeTag={getListProps?.activeTag}
+          tagList={getListProps?.tagList}
+          handleCloseTag={getListProps?.handleCloseTag}
+          handleTagChange={getListProps?.handleTagChange}
+        />
+        {getListProps?.reLoading ? (
+          <ListLoading />
+        ) : noData ? (
+          <ListEmpty
+            tagList={getListProps?.cacheTagList}
+            showRecommendTag={getListProps?.showRecommendTag}
+            handleClickEmptyTag={getListProps?.handleClickEmptyTag}
           />
-          <SortComponent
-            sort={getListProps?.sort}
-            sortOptions={getListProps?.sortOptions}
-            handleSortChange={getListProps?.handleSortChange}
-            activeTag={getListProps?.activeTag}
-            tagList={getListProps?.tagList}
-            handleCloseTag={getListProps?.handleCloseTag}
-            handleTagChange={getListProps?.handleTagChange}
-          />
-          {getListProps?.reLoading ? (
-            <ListLoading />
-          ) : noData ? (
-            <ListEmpty
-              tagList={getListProps?.cacheTagList}
-              showRecommendTag={getListProps?.showRecommendTag}
-              handleClickEmptyTag={getListProps?.handleClickEmptyTag}
-            />
-          ) : (
-            <>
-              <AgentCardContainer agentList={getListProps?.agentList} />
-              {getListProps?.hasMoreData && getListProps?.loading && (
-                <MoreLoading />
-              )}
-            </>
-          )}
-          {!getListProps?.hasMoreData && !getListProps?.loading && (
-            <FeatureLabelCard />
-          )}
-        </div>
-      </Layout>
-    </MixpanelTrackProvider>
+        ) : (
+          <>
+            <AgentCardContainer agentList={getListProps?.agentList} />
+            {getListProps?.hasMoreData && getListProps?.loading && (
+              <MoreLoading />
+            )}
+          </>
+        )}
+        {!getListProps?.hasMoreData && !getListProps?.loading && (
+          <FeatureLabelCard />
+        )}
+      </div>
+    </Layout>
   )
 }
 

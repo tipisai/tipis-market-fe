@@ -1,21 +1,10 @@
 import Icon from "@ant-design/icons"
 import { getColor } from "@illa-public/color-scheme"
 import { CloseIcon } from "@illa-public/icon"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import { TeamInfo } from "@illa-public/public-types"
 import { App, Button, Modal, Select } from "antd"
 import { useTranslation } from "next-i18next"
-import {
-  FC,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import { FC, useCallback, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 import { TeamSelectItem } from "@/components/common/TeamSelectItem"
 import { ModalActionType } from "@/interface/common"
@@ -50,7 +39,6 @@ export const AgentTeamSelectModal: FC<TeamSelectModalProps> = (props) => {
 
   const [teamIdentifier, setTeamIdentifier] = useState<string>()
   const [loading, setLoading] = useState(false)
-  const { track } = useContext(MixpanelTrackContext)
 
   const teamOptions = useMemo(() => {
     return teamItems.map((item) => {
@@ -104,28 +92,25 @@ export const AgentTeamSelectModal: FC<TeamSelectModalProps> = (props) => {
     }
   }, [teamIdentifier, actionType, forkAgent, aiAgentID, ownerTeamIdentifier])
 
-  const handleSelectChange = useCallback(
-    (value: string) => {
-      track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-        element: "select_team_modal",
-        parameter1: actionType,
-        parameter5: aiAgentID,
-        team_id: String(value),
-      })
-      setTeamIdentifier(value as string)
-    },
-    [actionType, aiAgentID, track],
-  )
+  const handleSelectChange = useCallback((value: string) => {
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "select_team_modal",
+    //   parameter1: actionType,
+    //   parameter5: aiAgentID,
+    //   team_id: String(value),
+    // })
+    setTeamIdentifier(value as string)
+  }, [])
 
   useEffect(() => {
     if (visible) {
-      track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
-        element: "select_team_modal",
-        parameter1: actionType,
-        parameter5: aiAgentID,
-      })
+      // track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
+      //   element: "select_team_modal",
+      //   parameter1: actionType,
+      //   parameter5: aiAgentID,
+      // })
     }
-  }, [actionType, aiAgentID, track, visible])
+  }, [visible])
 
   useEffect(() => {
     if (!visible) {

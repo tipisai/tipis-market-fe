@@ -8,10 +8,6 @@ import {
 } from "@illa-public/icon"
 import { MarketShareAgent } from "@illa-public/invite-modal"
 import { getAIAgentMarketplaceInfo } from "@illa-public/market-agent/service"
-import {
-  ILLA_MIXPANEL_EVENT_TYPE,
-  MixpanelTrackContext,
-} from "@illa-public/mixpanel-utils"
 import { MarketAIAgent } from "@illa-public/public-types"
 import { TeamInfo, USER_ROLE } from "@illa-public/public-types"
 import { isBiggerThanTargetRole } from "@illa-public/user-role-utils"
@@ -25,11 +21,11 @@ import { Button } from "antd"
 import { useTranslation } from "next-i18next"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/router"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import CreateTeamModal from "@/components/common/CreateTeamModal"
 import { OPERATE_TYPE } from "@/constants/page"
 import { useCheckLogin } from "@/hooks/useCheckLogin"
-import { GTagCategory, GTagEvent, ModalActionType } from "@/interface/common"
+import { ModalActionType } from "@/interface/common"
 import {
   forkAIAgentToTeam,
   starAiAgent,
@@ -37,7 +33,6 @@ import {
 } from "@/services/Client/aiAgent"
 import { fetchTeamsInfo } from "@/services/Client/team"
 import { filterTeam } from "@/utils/filterTeam"
-import { sendTagEvent } from "@/utils/gtag"
 import { toEditAgent, toRunAgent } from "@/utils/navigate"
 import { AgentTeamSelectModal } from "../../TeamSelectModal"
 import {
@@ -61,7 +56,6 @@ export const Operational: FC<OperationalProps> = ({
   const { t } = useTranslation()
   const { message } = App.useApp()
 
-  const { track } = useContext(MixpanelTrackContext)
   const searchParams = useSearchParams()
   const [operateType, setOperateType] = useState<OPERATE_TYPE | null>(
     searchParams.get("operateType") as OPERATE_TYPE,
@@ -80,19 +74,19 @@ export const Operational: FC<OperationalProps> = ({
   const aiAgentID = detail?.aiAgent?.aiAgentID
 
   const openShapxodal = () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-      element: "share",
-      parameter5: aiAgentID,
-    })
-    sendTagEvent({
-      action: GTagEvent.CLICK,
-      category: GTagCategory.AGENT_DETAIL_SHARE_CLICK,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "share",
+    //   parameter5: aiAgentID,
+    // })
+    // sendTagEvent({
+    //   action: GTagEvent.CLICK,
+    //   category: GTagCategory.AGENT_DETAIL_SHARE_CLICK,
+    // })
     setShareVisible(true)
-    track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
-      element: "share_modal",
-      parameter5: aiAgentID,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
+    //   element: "share_modal",
+    //   parameter5: aiAgentID,
+    // })
   }
 
   const closeTeamSelectModal = () => {
@@ -104,14 +98,14 @@ export const Operational: FC<OperationalProps> = ({
   }
 
   const handleRunAgent = useCallback(async () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-      element: "run",
-      parameter5: aiAgentID,
-    })
-    sendTagEvent({
-      action: GTagEvent.CLICK,
-      category: GTagCategory.AGENT_DETAIL_RUN_CLICK,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "run",
+    //   parameter5: aiAgentID,
+    // })
+    // sendTagEvent({
+    //   action: GTagEvent.CLICK,
+    //   category: GTagCategory.AGENT_DETAIL_RUN_CLICK,
+    // })
     const isLogin = checkLoginAndRedirect(OPERATE_TYPE.RUN)
     if (!isLogin) return
     setRunLoading(true)
@@ -145,21 +139,16 @@ export const Operational: FC<OperationalProps> = ({
     aiAgentID,
     checkLoginAndRedirect,
     detail.marketplace?.contributorTeam?.teamIdentifier,
-    track,
   ])
 
   const star = useCallback(async () => {
     setStarLoading(true)
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-      element: "star",
-      parameter5: aiAgentID,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "star",
+    //   parameter5: aiAgentID,
+    // })
     const isLogin = checkLoginAndRedirect(OPERATE_TYPE.STAR)
     if (!isLogin) return
-    sendTagEvent({
-      action: GTagEvent.CLICK,
-      category: GTagCategory.AGENT_DETAIL_STAR_CLICK,
-    })
     try {
       detail.marketplace?.isStarredByCurrentUser
         ? await unStarAiAgent(aiAgentID)
@@ -179,7 +168,6 @@ export const Operational: FC<OperationalProps> = ({
     message,
     setAgentDetail,
     t,
-    track,
   ])
 
   const forkAIAgent = useCallback(
@@ -200,15 +188,11 @@ export const Operational: FC<OperationalProps> = ({
   )
 
   const handleForkAgent = useCallback(async () => {
-    track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-      element: "fork",
-      parameter5: aiAgentID,
-    })
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "fork",
+    //   parameter5: aiAgentID,
+    // })
     const isLogin = checkLoginAndRedirect(OPERATE_TYPE.FORK)
-    sendTagEvent({
-      action: GTagEvent.CLICK,
-      category: GTagCategory.AGENT_DETAIL_FORK_CLICK,
-    })
     if (!isLogin) return
     setForkLoading(true)
     let res, teamItems
@@ -232,7 +216,7 @@ export const Operational: FC<OperationalProps> = ({
       setTeamSelectActionType("fork")
       setTeamSelectVisible(true)
     }
-  }, [aiAgentID, checkLoginAndRedirect, forkAIAgent, track])
+  }, [checkLoginAndRedirect, forkAIAgent])
 
   const onCreateTeamSuccess = useCallback(
     (teamIdentifier: string, teamId: string) => {
@@ -259,14 +243,10 @@ export const Operational: FC<OperationalProps> = ({
 
   const handleCopyMarketplaceLink = useCallback(
     (link: string) => {
-      track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-        element: "share_modal_link",
-        parameter5: aiAgentID,
-      })
-      sendTagEvent({
-        action: GTagEvent.CLICK,
-        category: GTagCategory.AGENT_DETAIL_SHARE_COPY_CLICK,
-      })
+      // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+      //   element: "share_modal_link",
+      //   parameter5: aiAgentID,
+      // })
       const flag = copyToClipboard(
         t("user_management.modal.contribute.default_text.agent", {
           agentName: detail.aiAgent?.name,
@@ -282,24 +262,16 @@ export const Operational: FC<OperationalProps> = ({
         message.success(t("copied"))
       }
     },
-    [aiAgentID, detail.aiAgent?.name, message, t, track],
+    [detail.aiAgent?.name, message, t],
   )
 
-  const handleShareByMedia = useCallback(
-    (name: string) => {
-      track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-        element: "share_modal_social_media",
-        parameter4: name,
-        parameter5: aiAgentID,
-      })
-      sendTagEvent({
-        action: GTagEvent.CLICK,
-        category: GTagCategory.AGENT_DETAIL_SHARE_SOCIAL_MEDIA_CLICK,
-        label: name,
-      })
-    },
-    [aiAgentID, track],
-  )
+  const handleShareByMedia = useCallback((_name: string) => {
+    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
+    //   element: "share_modal_social_media",
+    //   parameter4: name,
+    //   parameter5: aiAgentID,
+    // })
+  }, [])
 
   useEffect(() => {
     if (operateType) {

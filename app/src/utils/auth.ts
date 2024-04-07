@@ -3,9 +3,9 @@ import { isServerSide } from "@/utils/serverHelper"
 
 export const getAuthToken = () => {
   if (isServerSide()) return
-  return getCookie("ILLA_TOKEN")
+  return getCookie("TIPIS_TOKEN")
 }
 
 export const removeAuthToken = () => {
-  removeCookie("ILLA_TOKEN")
+  removeCookie("TIPIS_TOKEN")
 }
