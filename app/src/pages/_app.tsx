@@ -1,11 +1,14 @@
 import { CacheProvider, EmotionCache, Global } from "@emotion/react"
 import { CurrentUserInfo } from "@illa-public/public-types"
+import { TipisTrack } from "@illa-public/track-utils"
 import { initGTMConfig } from "@illa-public/utils"
 import { App as AntdApp, ConfigProvider, ThemeConfig } from "antd"
 import { appWithTranslation } from "next-i18next"
 import { AppContext } from "next/app"
 import Head from "next/head"
 import { useRouter } from "next/router"
+import posthog from "posthog-js"
+import { PostHogProvider } from "posthog-js/react"
 import { useEffect, useState } from "react"
 import "@/api/http/base"
 import defaultThemeToken from "@/assets/theme/default.json"
@@ -27,6 +30,10 @@ export interface MyAppProps extends AppPropsWithLayout {
   isMobile?: boolean
 }
 
+if (typeof window !== "undefined" && process.env.ILLA_PUBLIC_POSTHOG_KEY) {
+  posthog.init(process.env.ILLA_PUBLIC_POSTHOG_KEY)
+}
+
 function MyApp({
   Component,
   pageProps,
@@ -45,17 +52,17 @@ function MyApp({
     loadingKey: 0,
   })
 
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     TipisTrack.identify(userInfo.userID, {
-  //       nickname: userInfo.nickname,
-  //       email: userInfo.email,
-  //       language: userInfo.language,
-  //     })
-  //   } else {
-  //     TipisTrack.reset()
-  //   }
-  // }, [userInfo])
+  useEffect(() => {
+    if (userInfo) {
+      TipisTrack.identify(userInfo.userID, {
+        nickname: userInfo.nickname,
+        email: userInfo.email,
+        language: userInfo.language,
+      })
+    } else {
+      TipisTrack.reset()
+    }
+  }, [userInfo])
 
   useEffect(() => {
     // track(
@@ -99,9 +106,8 @@ function MyApp({
     }
   }, [router.events])
   const getLayout = Component.getLayout || ((page) => page)
-  // PostHogProvider apiKey={process.env.ILLA_POSTHOG_KEY}
   return (
-    <>
+    <PostHogProvider client={posthog}>
       <Head>
         <meta
           name="viewport"
@@ -125,7 +131,7 @@ function MyApp({
           </InfoProvider>
         </CacheProvider>
       </ConfigProvider>
-    </>
+    </PostHogProvider>
   )
 }
 

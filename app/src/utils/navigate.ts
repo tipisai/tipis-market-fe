@@ -6,17 +6,17 @@ export const toRunAgent = (
   ownerTeamIdentifier: string,
 ) => {
   const token = getAuthToken()
-  window.location.href = `${process.env.ILLA_BUILDER_URL}/${ownerTeamIdentifier}/ai-agent/${agentID}/run?token=${token}&myTeamIdentifier=${teamIdentifier}`
+  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${ownerTeamIdentifier}/tipi/${agentID}/run?token=${token}&myTeamIdentifier=${teamIdentifier}`
 }
 
 export const toEditAgent = (agentID: string, teamIdentifier: string) => {
   const token = getAuthToken()
-  window.location.href = `${process.env.ILLA_BUILDER_URL}/${teamIdentifier}/ai-agent/${agentID}?token=${token}`
+  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${teamIdentifier}/tipi/${agentID}/edit?token=${token}`
 }
 
 export const toCreateAgent = (teamIdentifier: string) => {
   const token = getAuthToken()
-  window.location.href = `${process.env.ILLA_BUILDER_URL}/${teamIdentifier}/ai-agent?token=${token}`
+  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${teamIdentifier}/tipi/create?token=${token}`
 }
 
 export const toAccountSetting = () => {
