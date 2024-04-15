@@ -1,4 +1,4 @@
-import { SUBSCRIBE_PLAN, TeamInfo } from "@illa-public/public-types"
+import { TeamInfo } from "@illa-public/public-types"
 import { getPlanUtils } from "@illa-public/user-data"
 import {
   ACTION_MANAGE,
@@ -16,8 +16,4 @@ export const filterTeam = (teamItems: TeamInfo[]) => {
       ACTION_MANAGE.CREATE_AI_AGENT,
     )
   })
-}
-
-export const isFreeLicense = (plan?: SUBSCRIBE_PLAN, purchased?: boolean) => {
-  return plan === SUBSCRIBE_PLAN.TEAM_LICENSE_FREE && !purchased
 }
