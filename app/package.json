@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.20.0",
     "@ant-design/icons": "^5.3.1",
     "@emotion/cache": "^11.11.0",
     "@emotion/css": "^11.11.2",
@@ -19,18 +20,18 @@
     "@illa-public/color-scheme": "workspace:*",
     "@illa-public/icon": "workspace:*",
     "@illa-public/illa-net": "workspace:*",
-    "@illa-public/invite-modal": "workspace:*",
     "@illa-public/layout-auto-change": "workspace:*",
     "@illa-public/market-agent": "workspace:*",
+    "@illa-public/market-share": "workspace:^",
     "@illa-public/public-configs": "workspace:*",
     "@illa-public/public-types": "workspace:*",
     "@illa-public/record-editor": "workspace:*",
+    "@illa-public/track-utils": "workspace:^",
     "@illa-public/user-data": "workspace:*",
     "@illa-public/user-role-utils": "workspace:*",
     "@illa-public/utils": "workspace:*",
-    "@illa-public/track-utils": "workspace:^",
     "@tanem/react-nprogress": "^5.0.48",
-    "antd": "^5.15.1",
+    "antd": "^5.15.2",
     "axios": "^1.6.2",
     "copy-to-clipboard": "^3.3.3",
     "framer-motion": "^7.6.12",
@@ -42,6 +43,7 @@
     "qs": "^6.11.2",
     "react-hook-form": "^7.45.4",
     "react-i18next": "^13.5.0",
+    "react-share": "^4.4.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

@@ -11,9 +11,10 @@ import posthog from "posthog-js"
 import { PostHogProvider } from "posthog-js/react"
 import { useEffect, useState } from "react"
 import "@/api/http/base"
-import defaultThemeToken from "@/assets/theme/default.json"
+import defaultThemeToken from "@/assets/theme/theme-default.json"
 import { MOBILE_USER_AGENT } from "@/constants/regExp"
 import { InfoProvider } from "@/context/infoContext"
+import { ITempUserInfo } from "@/services/Client/users"
 import { fetchUserInfoByToken } from "@/services/Server/users"
 import { globalStyles } from "@/style"
 import { AppPropsWithLayout } from "@/types/nextjs"
@@ -26,7 +27,7 @@ export interface MyAppProps extends AppPropsWithLayout {
   emotionCache?: EmotionCache
   language?: string
   token?: string
-  userInfo?: CurrentUserInfo | undefined
+  userInfo?: ITempUserInfo | undefined
   isMobile?: boolean
 }
 
@@ -107,31 +108,34 @@ function MyApp({
   }, [router.events])
   const getLayout = Component.getLayout || ((page) => page)
   return (
-    <PostHogProvider client={posthog}>
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,user-scalable=0"
-        />
-        <link
-          rel="canonical"
-          href={`${process.env.ILLA_MARKET_URL}${
-            router.locale === "en-US" ? "" : `/${router.locale}`
-          }${router.asPath === "/" ? "" : router.asPath}`}
-        />
-      </Head>
-      <Loading isRouteChanging={state.isRouteChanging} key={state.loadingKey} />
-      <ConfigProvider theme={defaultThemeToken as ThemeConfig}>
-        <CacheProvider value={emotionCache}>
-          <Global styles={globalStyles} />
-          <InfoProvider userInfo={userInfo} isMobile={isMobile}>
-            <AntdApp component={false}>
+    <ConfigProvider theme={defaultThemeToken as ThemeConfig}>
+      <AntdApp component={false}>
+        <PostHogProvider client={posthog}>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width,initial-scale=1,user-scalable=0"
+            />
+            <link
+              rel="canonical"
+              href={`${process.env.ILLA_MARKET_URL}${
+                router.locale === "en-US" ? "" : `/${router.locale}`
+              }${router.asPath === "/" ? "" : router.asPath}`}
+            />
+          </Head>
+          <Loading
+            isRouteChanging={state.isRouteChanging}
+            key={state.loadingKey}
+          />
+          <CacheProvider value={emotionCache}>
+            <Global styles={globalStyles} />
+            <InfoProvider userInfo={userInfo} isMobile={isMobile}>
               {getLayout(<Component {...pageProps} />)}
-            </AntdApp>
-          </InfoProvider>
-        </CacheProvider>
-      </ConfigProvider>
-    </PostHogProvider>
+            </InfoProvider>
+          </CacheProvider>
+        </PostHogProvider>
+      </AntdApp>
+    </ConfigProvider>
   )
 }
 

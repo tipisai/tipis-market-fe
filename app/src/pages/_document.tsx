@@ -53,7 +53,6 @@ export default function AppDocument({ emotionStyleTags }: MyDocumentProps) {
 
 AppDocument.getInitialProps = async (ctx: DocumentContext) => {
   const originalRenderPage = ctx.renderPage
-
   const cache = createEmotionCache()
   const { extractCriticalToChunks } = createEmotionServer(cache)
 
@@ -68,7 +67,6 @@ AppDocument.getInitialProps = async (ctx: DocumentContext) => {
     })
 
   const initialProps = await Document.getInitialProps(ctx)
-
   const emotionStyles = extractCriticalToChunks(initialProps.html)
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style

@@ -50,13 +50,6 @@ export const rightHeaderStyle = css`
   `)}
 `
 
-export const backStyle = css`
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-`
-
 export const backNameStyle = css`
   font-size: 14px;
   font-weight: 500;

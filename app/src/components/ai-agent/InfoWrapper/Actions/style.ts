@@ -46,10 +46,6 @@ export const runButtonAreaStyle = css`
   `)}
 `
 
-export const starStyle = css`
-  color: ${getColor("yellow", "03")};
-`
-
 export const numStyle = css`
   margin-left: 4px;
 `

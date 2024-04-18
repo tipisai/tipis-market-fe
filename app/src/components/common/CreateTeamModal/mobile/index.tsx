@@ -10,7 +10,7 @@ import {
   CreateTeamErrorMsg,
   CreateTeamFields,
 } from "@/components/common/CreateTeamModal/interface"
-import { DOMAIN_FORMAT } from "@/constants/regExp"
+import { TEAM_IDENTIFY_FORMAT } from "@/constants/regExp"
 import {
   descriptionStyle,
   errorMsgStyle,
@@ -59,6 +59,7 @@ const CreateTeamMobileModal: FC<CreateTeamMobileModalProps> = (props) => {
           backdropFilter: "blur(5px)",
         },
       }}
+      destroyOnClose
     >
       <div css={modalCloseIconStyle} onClick={onCancel}>
         <Icon component={CloseIcon} />
@@ -108,7 +109,7 @@ const CreateTeamMobileModal: FC<CreateTeamMobileModalProps> = (props) => {
             rules={{
               required: t("homepage.team_modal.team_domain_empty") || "",
               pattern: {
-                value: DOMAIN_FORMAT,
+                value: TEAM_IDENTIFY_FORMAT,
                 message: t("homepage.team_modal.team_domain_invalid_character"),
               },
               maxLength: {

@@ -2,7 +2,7 @@ import { ERROR_FLAG, isILLAAPiError } from "@illa-public/illa-net"
 import { LayoutAutoChange } from "@illa-public/layout-auto-change"
 import { App } from "antd"
 import { useTranslation } from "next-i18next"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import {
   CreateTeamErrorMsg,
@@ -10,13 +10,10 @@ import {
 } from "@/components/common/CreateTeamModal/interface"
 import CreateTeamMobileModal from "@/components/common/CreateTeamModal/mobile"
 import CreateTeamPCModal from "@/components/common/CreateTeamModal/pc"
-import { ModalActionType } from "@/interface/common"
 import { createTeam } from "@/services/Client/team"
 
 interface CreateTeamModalProps {
   visible: boolean
-  actionType?: ModalActionType
-  ID?: string
   onCancel?: () => void
   onCreateTeamSuccess?: (identifier: string, id: string) => void
 }
@@ -24,13 +21,7 @@ interface CreateTeamModalProps {
 const CreateTeamModal: FC<CreateTeamModalProps> = (props) => {
   const { t } = useTranslation()
   const { message } = App.useApp()
-  const {
-    visible,
-    actionType = "create",
-    ID,
-    onCancel,
-    onCreateTeamSuccess,
-  } = props
+  const { visible, onCancel, onCreateTeamSuccess } = props
 
   const createFormProps = useForm<CreateTeamFields>({
     mode: "onSubmit",
@@ -45,11 +36,6 @@ const CreateTeamModal: FC<CreateTeamModalProps> = (props) => {
   }
 
   const onSubmitCreateTeam: SubmitHandler<CreateTeamFields> = async (data) => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-    //   element: "create_team_modal",
-    //   parameter1: actionType,
-    //   parameter5: ID,
-    // })
     setLoading(true)
     try {
       const res = await createTeam(data)
@@ -79,16 +65,6 @@ const CreateTeamModal: FC<CreateTeamModalProps> = (props) => {
       setLoading(false)
     }
   }
-
-  useEffect(() => {
-    if (visible) {
-      // track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
-      //   element: "create_team_modal",
-      //   parameter1: actionType,
-      //   parameter5: ID,
-      // })
-    }
-  }, [visible])
 
   return (
     <FormProvider {...createFormProps}>

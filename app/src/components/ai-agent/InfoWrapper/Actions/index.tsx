@@ -1,174 +1,61 @@
 import Icon from "@ant-design/icons"
-import {
-  ForkIcon,
-  PlayFillIcon,
-  ShareIcon,
-  StarFillIcon,
-  StarOutlineIcon,
-} from "@illa-public/icon"
-import { MarketShareAgent } from "@illa-public/invite-modal"
-import { getAIAgentMarketplaceInfo } from "@illa-public/market-agent/service"
+import { ForkIcon, PlayFillIcon, ShareIcon } from "@illa-public/icon"
+import "@illa-public/market-share"
+import { MarketShareModal } from "@illa-public/market-share"
 import { MarketAIAgent } from "@illa-public/public-types"
-import { TeamInfo, USER_ROLE } from "@illa-public/public-types"
-import { isBiggerThanTargetRole } from "@illa-public/user-role-utils"
-import {
-  COPY_STATUS,
-  copyToClipboard,
-  formatNumForAgent,
-} from "@illa-public/utils"
+import { TeamInfo } from "@illa-public/public-types"
+import { formatNumForAgent } from "@illa-public/utils"
 import { App } from "antd"
 import { Button } from "antd"
 import { useTranslation } from "next-i18next"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/router"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
 import CreateTeamModal from "@/components/common/CreateTeamModal"
 import { OPERATE_TYPE } from "@/constants/page"
+import { InfoContext } from "@/context/infoContext"
 import { useCheckLogin } from "@/hooks/useCheckLogin"
-import { ModalActionType } from "@/interface/common"
 import {
+  fetchPinTipi,
+  fetchUnPinTipi,
   forkAIAgentToTeam,
-  starAiAgent,
-  unStarAiAgent,
 } from "@/services/Client/aiAgent"
 import { fetchTeamsInfo } from "@/services/Client/team"
-import { filterTeam } from "@/utils/filterTeam"
+import { fetchUserInfo } from "@/services/Client/users"
+import { canEditTeam, canUseTeam } from "@/utils/filterTeam"
 import { toEditAgent, toRunAgent } from "@/utils/navigate"
+import { PinModal } from "../../PinModal"
 import { AgentTeamSelectModal } from "../../TeamSelectModal"
 import {
   agentActionsStyle,
   numStyle,
   otherActionsStyle,
   runButtonAreaStyle,
-  starStyle,
 } from "./style"
 
 interface OperationalProps {
   detail: MarketAIAgent
-  setAgentDetail: (detail: MarketAIAgent) => void
 }
 
-export const Operational: FC<OperationalProps> = ({
-  detail,
-  setAgentDetail,
-}) => {
+export const Actions: FC<OperationalProps> = ({ detail }) => {
   const checkLoginAndRedirect = useCheckLogin()
   const { t } = useTranslation()
   const { message } = App.useApp()
 
   const searchParams = useSearchParams()
-  const [operateType, setOperateType] = useState<OPERATE_TYPE | null>(
-    searchParams.get("operateType") as OPERATE_TYPE,
-  )
   const router = useRouter()
+  const { userInfo, setUserInfo } = useContext(InfoContext)
 
-  const [starLoading, setStarLoading] = useState(false)
+  const [pinLoading, setPinLoading] = useState(false)
   const [runLoading, setRunLoading] = useState(false)
   const [forkLoading, setForkLoading] = useState(false)
   const [shareVisible, setShareVisible] = useState(false)
   const [createTeamVisible, setCreateTeamVisible] = useState(false)
   const [teamSelectVisible, setTeamSelectVisible] = useState(false)
+  const [pinModalVisible, setPinModalVisible] = useState(false)
   const [teamItems, setTeamItems] = useState<TeamInfo[]>([])
-  const [teamSelectActionType, setTeamSelectActionType] =
-    useState<ModalActionType>("run")
+  const [actionType, setActionType] = useState<OPERATE_TYPE>()
   const aiAgentID = detail?.aiAgent?.aiAgentID
-
-  const openShapxodal = () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-    //   element: "share",
-    //   parameter5: aiAgentID,
-    // })
-    // sendTagEvent({
-    //   action: GTagEvent.CLICK,
-    //   category: GTagCategory.AGENT_DETAIL_SHARE_CLICK,
-    // })
-    setShareVisible(true)
-    // track(ILLA_MIXPANEL_EVENT_TYPE.SHOW, {
-    //   element: "share_modal",
-    //   parameter5: aiAgentID,
-    // })
-  }
-
-  const closeTeamSelectModal = () => {
-    setTeamSelectVisible(false)
-  }
-
-  const closeCreateTeamModal = () => {
-    setCreateTeamVisible(false)
-  }
-
-  const handleRunAgent = useCallback(async () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-    //   element: "run",
-    //   parameter5: aiAgentID,
-    // })
-    // sendTagEvent({
-    //   action: GTagEvent.CLICK,
-    //   category: GTagCategory.AGENT_DETAIL_RUN_CLICK,
-    // })
-    const isLogin = checkLoginAndRedirect(OPERATE_TYPE.RUN)
-    if (!isLogin) return
-    setRunLoading(true)
-    let res, teamItems
-    try {
-      res = await fetchTeamsInfo()
-      if (res.data) {
-        teamItems = res.data.filter((item) => {
-          return isBiggerThanTargetRole(USER_ROLE.VIEWER, item.myRole)
-        })
-      }
-    } finally {
-      setRunLoading(false)
-    }
-    setTeamItems(teamItems ?? [])
-    if (!teamItems || teamItems?.length === 0) {
-      setTeamSelectActionType("run")
-      setCreateTeamVisible(true)
-    } else if (teamItems?.length === 1) {
-      const teamIdentifier = teamItems[0].identifier
-      toRunAgent(
-        aiAgentID,
-        teamIdentifier,
-        detail.marketplace?.contributorTeam?.teamIdentifier,
-      )
-    } else {
-      setTeamSelectActionType("run")
-      setTeamSelectVisible(true)
-    }
-  }, [
-    aiAgentID,
-    checkLoginAndRedirect,
-    detail.marketplace?.contributorTeam?.teamIdentifier,
-  ])
-
-  const star = useCallback(async () => {
-    setStarLoading(true)
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-    //   element: "star",
-    //   parameter5: aiAgentID,
-    // })
-    const isLogin = checkLoginAndRedirect(OPERATE_TYPE.STAR)
-    if (!isLogin) return
-    try {
-      detail.marketplace?.isStarredByCurrentUser
-        ? await unStarAiAgent(aiAgentID)
-        : await starAiAgent(aiAgentID)
-      const res = await getAIAgentMarketplaceInfo(aiAgentID)
-      setAgentDetail(res.data)
-      message.success(t("dashboard.message.star-suc"))
-    } catch (error) {
-      message.error(t("dashboard.message.star-failed"))
-    } finally {
-      setStarLoading(false)
-    }
-  }, [
-    aiAgentID,
-    checkLoginAndRedirect,
-    detail.marketplace?.isStarredByCurrentUser,
-    message,
-    setAgentDetail,
-    t,
-  ])
 
   const forkAIAgent = useCallback(
     async (teamIdentifier: string, teamId: string) => {
@@ -187,25 +74,51 @@ export const Operational: FC<OperationalProps> = ({
     [aiAgentID, forkLoading],
   )
 
+  const pinOrUnPinTipi = useCallback(
+    async (teamID: string) => {
+      try {
+        const targetTeamPinList =
+          userInfo?.personalization?.pinedTipisTabs?.[teamID]
+        if (
+          Array.isArray(targetTeamPinList) &&
+          targetTeamPinList.find((item) => item.tipiID === aiAgentID)
+        ) {
+          await fetchUnPinTipi(teamID, aiAgentID)
+          message.success(t("_un pin success"))
+        } else {
+          await fetchPinTipi(teamID, aiAgentID)
+          message.success(t("_pin success"))
+        }
+        const currentUerInfo = await fetchUserInfo()
+        setUserInfo(currentUerInfo.data)
+      } catch (e) {
+        message.error(t("_pin error"))
+      }
+    },
+    [
+      aiAgentID,
+      message,
+      setUserInfo,
+      t,
+      userInfo?.personalization?.pinedTipisTabs,
+    ],
+  )
+
   const handleForkAgent = useCallback(async () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-    //   element: "fork",
-    //   parameter5: aiAgentID,
-    // })
     const isLogin = checkLoginAndRedirect(OPERATE_TYPE.FORK)
     if (!isLogin) return
     setForkLoading(true)
     let res, teamItems
     try {
       res = await fetchTeamsInfo()
-      teamItems = filterTeam(res.data)
+      teamItems = canEditTeam(res.data)
     } catch (e) {
     } finally {
       setForkLoading(false)
     }
     setTeamItems(teamItems ?? [])
     if (!teamItems || teamItems.length === 0) {
-      setTeamSelectActionType("fork")
+      setActionType(OPERATE_TYPE.FORK)
       setCreateTeamVisible(true)
     } else if (teamItems?.length === 1) {
       const teamInfo = teamItems[0]
@@ -213,83 +126,116 @@ export const Operational: FC<OperationalProps> = ({
       const teamIdentifier = teamInfo.identifier
       await forkAIAgent(teamIdentifier, teamId)
     } else {
-      setTeamSelectActionType("fork")
+      setActionType(OPERATE_TYPE.FORK)
       setTeamSelectVisible(true)
     }
   }, [checkLoginAndRedirect, forkAIAgent])
 
-  const onCreateTeamSuccess = useCallback(
-    (teamIdentifier: string, teamId: string) => {
-      switch (teamSelectActionType) {
-        case "fork":
-          forkAIAgent(teamIdentifier, teamId)
+  const handleRunAgent = useCallback(async () => {
+    const isLogin = checkLoginAndRedirect(OPERATE_TYPE.RUN)
+    if (!isLogin) return
+    setRunLoading(true)
+    let res, teamItems
+    try {
+      res = await fetchTeamsInfo()
+      teamItems = canUseTeam(res.data)
+    } catch (e) {
+    } finally {
+      setRunLoading(false)
+    }
+    setTeamItems(teamItems ?? [])
+    if (!teamItems || teamItems?.length === 0) {
+      setActionType(OPERATE_TYPE.RUN)
+      setCreateTeamVisible(true)
+    } else if (teamItems?.length === 1) {
+      const teamIdentifier = teamItems[0].identifier
+      toRunAgent(
+        aiAgentID,
+        teamIdentifier,
+        detail.marketplace?.contributorTeam?.teamIdentifier,
+      )
+    } else {
+      setActionType(OPERATE_TYPE.RUN)
+      setTeamSelectVisible(true)
+    }
+  }, [
+    aiAgentID,
+    checkLoginAndRedirect,
+    detail.marketplace?.contributorTeam?.teamIdentifier,
+  ])
+
+  const handlePin = useCallback(async () => {
+    const isLogin = checkLoginAndRedirect(OPERATE_TYPE.FORK)
+    if (!isLogin) return
+    setPinLoading(true)
+    let res, teamItems
+    try {
+      res = await fetchTeamsInfo()
+      teamItems = canUseTeam(res.data)
+    } catch (e) {
+    } finally {
+      setPinLoading(false)
+    }
+    setTeamItems(teamItems ?? [])
+    if (!teamItems || teamItems.length === 0) {
+      setActionType(OPERATE_TYPE.PIN)
+      setCreateTeamVisible(true)
+    } else if (teamItems?.length === 1) {
+      await pinOrUnPinTipi(teamItems[0].id)
+    } else {
+      setActionType(OPERATE_TYPE.PIN)
+      setPinModalVisible(true)
+    }
+  }, [checkLoginAndRedirect, pinOrUnPinTipi])
+
+  const onCreateOrSelectCallback = useCallback(
+    (teamIdentifier: string, teamID: string) => {
+      switch (actionType) {
+        case OPERATE_TYPE.FORK: {
+          forkAIAgent(teamIdentifier, teamID)
           break
-        case "run":
+        }
+        case OPERATE_TYPE.RUN: {
           toRunAgent(
             aiAgentID,
             teamIdentifier,
             detail.marketplace?.contributorTeam?.teamIdentifier,
           )
           break
+        }
+        case OPERATE_TYPE.PIN: {
+          pinOrUnPinTipi(teamID)
+        }
       }
     },
     [
-      teamSelectActionType,
+      actionType,
+      forkAIAgent,
       aiAgentID,
       detail.marketplace?.contributorTeam?.teamIdentifier,
-      forkAIAgent,
+      pinOrUnPinTipi,
     ],
   )
 
-  const handleCopyMarketplaceLink = useCallback(
-    (link: string) => {
-      // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-      //   element: "share_modal_link",
-      //   parameter5: aiAgentID,
-      // })
-      const flag = copyToClipboard(
-        t("user_management.modal.contribute.default_text.agent", {
-          agentName: detail.aiAgent?.name,
-          agentLink: link,
-        }),
-      )
-      if (flag === COPY_STATUS.EMPTY) {
-        message.info({
-          content: t("empty_copied_tips"),
-        })
-        message.info(t("empty_copied_tips"))
-      } else {
-        message.success(t("copied"))
-      }
-    },
-    [detail.aiAgent?.name, message, t],
-  )
-
-  const handleShareByMedia = useCallback((_name: string) => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, {
-    //   element: "share_modal_social_media",
-    //   parameter4: name,
-    //   parameter5: aiAgentID,
-    // })
-  }, [])
-
   useEffect(() => {
-    if (operateType) {
-      switch (operateType) {
-        case OPERATE_TYPE.STAR:
-          !detail.marketplace?.isStarredByCurrentUser && star()
-          break
-        case OPERATE_TYPE.FORK:
+    const redirectAction = searchParams.get("operateType") as OPERATE_TYPE
+    if (redirectAction) {
+      switch (redirectAction) {
+        case OPERATE_TYPE.FORK: {
           handleForkAgent()
           break
-        case OPERATE_TYPE.RUN:
+        }
+        case OPERATE_TYPE.RUN: {
           handleRunAgent()
           break
+        }
+        case OPERATE_TYPE.PIN: {
+          handlePin()
+        }
       }
-      setOperateType(null)
       router.replace(router.asPath.split("?")[0], undefined, { shallow: true })
     }
-  }, [detail, handleForkAgent, handleRunAgent, operateType, star, router])
+  }, [handleForkAgent, handleRunAgent, handlePin, router, searchParams])
 
   return (
     <>
@@ -327,29 +273,12 @@ export const Operational: FC<OperationalProps> = ({
               </span>
             )}
           </Button>
-          <Button
-            size="large"
-            loading={starLoading}
-            onClick={star}
-            icon={
-              detail.marketplace?.isStarredByCurrentUser ? (
-                <Icon component={StarFillIcon} css={starStyle} />
-              ) : (
-                <Icon component={StarOutlineIcon} />
-              )
-            }
-            style={{ justifyContent: "center" }}
-          >
-            <span>{t("detail.operation.star")}</span>
-            {detail.marketplace?.numStars !== 0 && (
-              <span css={numStyle}>
-                {formatNumForAgent(detail.marketplace?.numStars)}
-              </span>
-            )}
+          <Button size="large" onClick={handlePin} loading={pinLoading}>
+            <span>{t("_pin")}</span>
           </Button>
           <Button
             size="large"
-            onClick={openShapxodal}
+            onClick={() => setShareVisible(true)}
             icon={<Icon component={ShareIcon} />}
             style={{ justifyContent: "center" }}
           >
@@ -359,36 +288,33 @@ export const Operational: FC<OperationalProps> = ({
       </div>
       <CreateTeamModal
         visible={createTeamVisible}
-        actionType={teamSelectActionType}
-        ID={detail.aiAgent?.aiAgentID}
-        onCancel={closeCreateTeamModal}
-        onCreateTeamSuccess={onCreateTeamSuccess}
+        onCancel={() => setCreateTeamVisible(false)}
+        onCreateTeamSuccess={onCreateOrSelectCallback}
       />
       <AgentTeamSelectModal
-        aiAgentID={detail.aiAgent?.aiAgentID}
         visible={teamSelectVisible}
         teamItems={teamItems}
-        ownerTeamIdentifier={
-          detail.marketplace?.contributorTeam?.teamIdentifier
-        }
-        actionType={teamSelectActionType}
-        onCancel={closeTeamSelectModal}
+        actionType={actionType}
+        onCancel={() => setTeamSelectVisible(false)}
+        onSelectCallback={onCreateOrSelectCallback}
       />
-      {shareVisible && (
-        <MarketShareAgent
-          title={`${t("user_management.modal.social_media.default_text.agent", {
-            agentName: detail.aiAgent?.name,
-          })}`}
-          onClose={() => setShareVisible(false)}
-          agentID={detail.aiAgent?.aiAgentID}
-          defaultAgentContributed={true}
-          onAgentContributed={() => {}}
-          onCopyAgentMarketLink={handleCopyMarketplaceLink}
-          userRoleForThisAgent={USER_ROLE.GUEST}
-          ownerTeamID={detail.marketplace?.contributorTeam?.teamID}
-          onShare={handleShareByMedia}
-        />
-      )}
+      <MarketShareModal
+        title={`${t("user_management.modal.social_media.default_text.agent", {
+          agentName: detail.aiAgent?.name,
+        })}`}
+        visible={shareVisible}
+        onClose={() => setShareVisible(false)}
+        ID={detail.aiAgent?.aiAgentID}
+        name={detail.aiAgent?.name}
+      />
+      <PinModal
+        visible={pinModalVisible}
+        teamItems={teamItems}
+        agentID={aiAgentID}
+        onPinCallback={pinOrUnPinTipi}
+        pinedTipisTabs={userInfo?.personalization?.pinedTipisTabs}
+        onCancel={() => setPinModalVisible(false)}
+      />
     </>
   )
 }

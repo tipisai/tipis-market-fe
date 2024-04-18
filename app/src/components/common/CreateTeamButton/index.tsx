@@ -9,7 +9,7 @@ import CreateTeamModal from "@/components/common/CreateTeamModal"
 import { OPERATE_TYPE } from "@/constants/page"
 import { useCheckLogin } from "@/hooks/useCheckLogin"
 import { fetchTeamsInfo } from "@/services/Client/team"
-import { filterTeam } from "@/utils/filterTeam"
+import { canEditTeam } from "@/utils/filterTeam"
 import { toCreateAgent } from "@/utils/navigate"
 import BlackButton from "../BlackButton"
 
@@ -38,7 +38,7 @@ export const CreateTeamButton: FC = () => {
     let res, teamItems
     try {
       res = await fetchTeamsInfo()
-      teamItems = filterTeam(res.data)
+      teamItems = canEditTeam(res.data)
     } finally {
       setLoading(false)
     }
@@ -72,14 +72,14 @@ export const CreateTeamButton: FC = () => {
         {t("create_agent")}
       </BlackButton>
       <AgentTeamSelectModal
-        actionType="create"
+        actionType={OPERATE_TYPE.CREATE}
         teamItems={teamItems}
         visible={teamSelectVisible}
         onCancel={closeTeamSelectModal}
+        onSelectCallback={handleCreateTeamSuccess}
       />
       <CreateTeamModal
         visible={createTeamVisible}
-        actionType="create"
         onCancel={closeCreateTeamModal}
         onCreateTeamSuccess={handleCreateTeamSuccess}
       />

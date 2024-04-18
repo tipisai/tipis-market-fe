@@ -14,7 +14,6 @@ export const fetchAIAgentList = async (params: ProductListParams) => {
     )
     return await response.json()
   } catch (e) {
-    console.log(22222)
     throw e
   }
 }

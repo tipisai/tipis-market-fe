@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import { FC, useEffect, useMemo, useRef } from "react"
+import { FC, useMemo } from "react"
 import { AgentCardContainer } from "@/components/ai-agent/AgentCardContainer"
 import { FeatureLabelCard } from "@/components/ai-agent/FeatureLabel"
 import HomeStructuredData from "@/components/ai-agent/HomeStructuredData"
@@ -15,6 +15,7 @@ import { ListLoading } from "@/components/entrance/ListLoading"
 import { MoreLoading } from "@/components/entrance/MoreLoading"
 import { SortComponent } from "@/components/entrance/SortComponent"
 import { INITIAL_PAGE, PAGESIZE } from "@/constants/page"
+import { useGetList } from "@/hooks/useGetList"
 import { PRODUCT_SORT_BY } from "@/interface/common"
 import { AgentPageProps } from "@/interface/pageIndex"
 import Layout from "@/layout/entrancePage"
@@ -38,10 +39,8 @@ export const contentStyle = css`
 const AgentPage: FC<AgentPageProps> = (props) => {
   const { agent } = props
   const { t } = useTranslation()
-  const isServerInitPage = useRef(true)
 
-  // const getListProps = useGetList(agent)
-  const getListProps = useget(agent)
+  const getListProps = useGetList(agent)
 
   const noData = getListProps?.agentList.length === 0
   const bannerContent = useMemo(
@@ -53,13 +52,6 @@ const AgentPage: FC<AgentPageProps> = (props) => {
     }),
     [],
   )
-
-  useEffect(() => {
-    isServerInitPage.current = false
-    return () => {
-      isServerInitPage.current = true
-    }
-  }, [])
 
   return (
     <Layout
@@ -130,7 +122,6 @@ export const getServerSideProps: GetServerSideProps<AgentPageProps> = async (
     limit: PAGESIZE,
     sortedBy: PRODUCT_SORT_BY.POPULAR,
     hashtags: query.currentHashtag as string,
-    isOfficial: false,
   })
   return { props: { ...translate, agent: response } }
 }

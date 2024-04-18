@@ -8,11 +8,10 @@ export interface ProductListParams {
   page: number
   limit: number
   sortedBy: PRODUCT_SORT_BY
+  isOfficial: boolean
   search?: string
   hashtags?: string
 }
-
-export type ModalActionType = "fork" | "create" | "run"
 
 export interface CanEditResponse {
   canEdit: boolean

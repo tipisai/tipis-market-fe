@@ -10,11 +10,16 @@ import {
   CreateTeamErrorMsg,
   CreateTeamFields,
 } from "@/components/common/CreateTeamModal/interface"
-import { DOMAIN_FORMAT } from "@/constants/regExp"
-import { errorIconStyle, errorMsgStyle, formLabelStyle } from "./style"
+import { TEAM_IDENTIFY_FORMAT } from "@/constants/regExp"
+import CreateTeamBg from "../assets/create-team-bg.svg?react"
+import "./style"
 import {
+  createBgStyle,
   descriptionStyle,
+  errorIconStyle,
+  errorMsgStyle,
   formHeaderStyle,
+  formLabelStyle,
   formStyle,
   gridFormFieldStyle,
   gridItemStyle,
@@ -50,12 +55,13 @@ const CreateTeamPCModal: FC<CreateTeamModalProps> = (props) => {
       styles={{
         content: {
           border: "unset",
-          background:
-            '#f7fff9 url("/create-team-modal/create-team-bg.svg") no-repeat',
-          backgroundPosition: "bottom",
+          background: "#f7fff9 ",
           minHeight: "540px",
           borderRadius: "16px",
           boxShadow: "0px 4px 16px rgb(0 0 0 / 8%)",
+          position: "relative",
+          zIndex: 1,
+          overflow: "hidden",
         },
         mask: {
           backgroundColor: getColor("white", "05"),
@@ -68,7 +74,9 @@ const CreateTeamPCModal: FC<CreateTeamModalProps> = (props) => {
       onCancel={onCancel}
       open={visible}
       centered
+      destroyOnClose
     >
+      <CreateTeamBg css={createBgStyle} />
       <div css={modalCloseIconStyle} onClick={onCancel}>
         <Icon component={CloseIcon} />
       </div>
@@ -133,7 +141,7 @@ const CreateTeamPCModal: FC<CreateTeamModalProps> = (props) => {
                 rules={{
                   required: t("homepage.team_modal.team_domain_empty") || "",
                   pattern: {
-                    value: DOMAIN_FORMAT,
+                    value: TEAM_IDENTIFY_FORMAT,
                     message: t(
                       "homepage.team_modal.team_domain_invalid_character",
                     ),

@@ -1,13 +1,11 @@
 import { MarketAgentListData } from "@illa-public/market-agent/service"
 import { MarketAIAgent } from "@illa-public/public-types"
-import { AxiosResponse } from "axios"
 import { useTranslation } from "next-i18next"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/router"
 import {
   UIEvent,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -19,14 +17,12 @@ import {
   PAGESIZE,
   SEARCH_KEY,
 } from "@/constants/page"
-import { InfoContext } from "@/context/infoContext"
 import { PRODUCT_SORT_BY, ProductListParams } from "@/interface/common"
-import { fetchAIgentList, fetchStarAIgentList } from "@/services/Client/aiAgent"
+import { fetchAIgentList } from "@/services/Client/aiAgent"
 import { isCancelError } from "@/utils/net"
 
 export const useGetList = (agentProduct?: MarketAgentListData) => {
   const { t } = useTranslation()
-  const { userInfo } = useContext(InfoContext)
   const [sort, setSort] = useState(PRODUCT_SORT_BY.POPULAR)
   const marketListPage = useRef(INITIAL_PAGE)
   const controllerRef = useRef<AbortController | null>(null)
@@ -38,9 +34,7 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
     searchParams.get(SEARCH_KEY.CURRENT_HASH_TAG) || undefined,
   )
   const [search, setSearch] = useState<string | undefined>()
-
-  // To resolve star page show recommend tag
-  const cacheSearch = useRef<string | undefined>()
+  const [isOfficial, setIsOfficial] = useState(false)
 
   const [agentList, setAgentList] = useState<MarketAIAgent[]>(
     agentProduct?.products || [],
@@ -64,30 +58,15 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
         value: PRODUCT_SORT_BY.LATEST,
       },
     ]
-    if (userInfo && userInfo.userID) {
-      options.push({
-        label: t("dashboard.sort-type.star"),
-        value: PRODUCT_SORT_BY.STARRED,
-      })
-    }
     return options
-  }, [t, userInfo])
+  }, [t])
 
   const showRecommendTag: boolean = useMemo(() => {
     if (!!searchParams.get(SEARCH_KEY.CURRENT_HASH_TAG)) {
       return agentList.length === 0
-    } else {
-      if (sort === PRODUCT_SORT_BY.STARRED) {
-        return (
-          agentList.length === 0 &&
-          activeTag === undefined &&
-          !!cacheSearch.current
-        )
-      } else {
-        return agentList.length === 0 && activeTag === undefined
-      }
     }
-  }, [activeTag, agentList.length, searchParams, sort])
+    return agentList.length === 0 && activeTag === undefined
+  }, [activeTag, agentList.length, searchParams])
 
   const getMarketList = useCallback(
     async (params?: Partial<ProductListParams>) => {
@@ -114,16 +93,11 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
         sortedBy: currentSort,
         search: currentSearch,
         hashtags: currentTag,
+        isOfficial: false, // zsadsa
       }
 
       try {
-        let res: AxiosResponse<MarketAgentListData>
-
-        if (currentSort === PRODUCT_SORT_BY.STARRED) {
-          res = await fetchStarAIgentList(requestParams, controller.signal)
-        } else {
-          res = await fetchAIgentList(requestParams, controller.signal)
-        }
+        const res = await fetchAIgentList(requestParams, controller.signal)
         if (marketListPage.current > INITIAL_PAGE) {
           setAgentList((prevState) =>
             prevState
@@ -188,7 +162,6 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
         setTagList([])
       }
     }
-    cacheSearch.current = search
     setReLoading(false)
   }, [getMarketList, search, activeTag])
 
@@ -198,19 +171,12 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
       setReLoading(true)
       marketListPage.current = 1
       const res = await getMarketList({ sortedBy: value as PRODUCT_SORT_BY })
-      if (
-        (!res || res.length === 0) &&
-        search &&
-        value === PRODUCT_SORT_BY.STARRED &&
-        !activeTag
-      ) {
-        setTagList([])
-      } else if (search && res && res.length > 0) {
+      if (search && res && res.length > 0) {
         setTagList(res)
       }
       setReLoading(false)
     },
-    [getMarketList, search, activeTag],
+    [getMarketList, search],
   )
 
   const handleTagChange = useCallback(
@@ -233,7 +199,7 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
     setSort(PRODUCT_SORT_BY.POPULAR)
     setTag(undefined)
     setSearch(undefined)
-    cacheSearch.current = undefined
+    setIsOfficial(false)
     marketListPage.current = 1
   }, [])
 
@@ -273,6 +239,24 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
     [getMarketList, resetParams, router, searchParams],
   )
 
+  const handleClickOfficial = useCallback(async () => {
+    setReLoading(true)
+    marketListPage.current = 1
+    const res = await getMarketList({ search })
+    if (!search) {
+      setTagList(cacheTagList.current)
+    } else if (res && res.length > 0) {
+      setTagList(res)
+    } else {
+      if (activeTag) {
+        setTagList([activeTag])
+      } else {
+        setTagList([])
+      }
+    }
+    setReLoading(false)
+  }, [activeTag, getMarketList, search])
+
   useEffect(() => {
     cacheTagList.current = agentProduct?.recommendHashtags ?? []
     setTagList(cacheTagList.current)
@@ -297,5 +281,6 @@ export const useGetList = (agentProduct?: MarketAgentListData) => {
     onSearch,
     handleSearchChange,
     handleClickEmptyTag,
+    handleClickOfficial,
   }
 }

@@ -6,7 +6,7 @@ export const toRunAgent = (
   ownerTeamIdentifier: string,
 ) => {
   const token = getAuthToken()
-  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${ownerTeamIdentifier}/tipi/${agentID}/run?token=${token}&myTeamIdentifier=${teamIdentifier}`
+  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${teamIdentifier}/tipi/${agentID}/run?token=${token}&ownerTeamIdentifier=${ownerTeamIdentifier}`
 }
 
 export const toEditAgent = (agentID: string, teamIdentifier: string) => {

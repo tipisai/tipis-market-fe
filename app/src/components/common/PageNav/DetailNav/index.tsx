@@ -6,13 +6,7 @@ import Link from "next/link"
 import { FC, useContext } from "react"
 import { InfoContext } from "@/context/infoContext"
 import { NavHeaderOptions } from "../NavHeaderOptions"
-import {
-  backNameStyle,
-  backStyle,
-  flexStyle,
-  navStyle,
-  rightHeaderStyle,
-} from "./style"
+import { backNameStyle, flexStyle, navStyle, rightHeaderStyle } from "./style"
 
 export const DetailNav: FC = () => {
   const { t } = useTranslation()
@@ -21,11 +15,12 @@ export const DetailNav: FC = () => {
   return (
     <div css={navStyle}>
       <Link css={flexStyle} href={"/"}>
-        <Button size="middle" type="text">
-          <span css={backStyle}>
-            <Icon component={PreviousIcon} width="20px" height="20px" />
-            <span css={backNameStyle}>{t("back")}</span>
-          </span>
+        <Button
+          size="middle"
+          type="text"
+          icon={<Icon component={PreviousIcon} />}
+        >
+          <span css={backNameStyle}>{t("back")}</span>
         </Button>
       </Link>
       <div css={rightHeaderStyle}>

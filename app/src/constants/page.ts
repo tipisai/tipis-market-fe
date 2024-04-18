@@ -9,7 +9,7 @@ export enum SEARCH_KEY {
 }
 
 export enum OPERATE_TYPE {
-  STAR = "star",
+  PIN = "pin",
   FORK = "fork",
   RUN = "run",
   CREATE = "create",

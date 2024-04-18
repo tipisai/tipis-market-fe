@@ -1,5 +1,5 @@
-import { CurrentUserInfo } from "@illa-public/public-types"
 import { ReactNode } from "react"
+import { ITempUserInfo } from "@/services/Client/users"
 
 export interface Tag {
   name: string
@@ -7,10 +7,12 @@ export interface Tag {
 }
 
 export interface InfoContextInject {
-  userInfo: CurrentUserInfo | undefined
+  userInfo: ITempUserInfo | undefined
   isMobile: boolean
+  setUserInfo: (userInfo: ITempUserInfo) => void
 }
 
-export interface InfoProviderProps extends InfoContextInject {
+export interface InfoProviderProps
+  extends Omit<InfoContextInject, "setUserInfo"> {
   children: ReactNode
 }

@@ -62,11 +62,3 @@ export const agentDescriptionStyle = css`
     line-height: 17px;
   `)}
 `
-
-export const submitCardStyle = css`
-  order: 4;
-  ${applyMobileStyle(css`
-    order: 3;
-    width: 100%;
-  `)}
-`

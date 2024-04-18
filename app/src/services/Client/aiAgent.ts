@@ -61,20 +61,6 @@ export const fetchAIgentList = (
   })
 }
 
-export const starAiAgent = (aiAgentID: string) => {
-  return marketplaceRequest({
-    url: `/aiAgents/${aiAgentID}/star`,
-    method: "POST",
-  })
-}
-
-export const unStarAiAgent = (aiAgentID: string) => {
-  return marketplaceRequest({
-    url: `/aiAgents/${aiAgentID}/star`,
-    method: "DELETE",
-  })
-}
-
 export const forkAIAgentToTeam = (aiAgentID: string, teamID: string) => {
   return agentRequest<Agent>({
     url: `/aiAgent/${aiAgentID}/forkTo/teams/${teamID}`,
@@ -86,5 +72,19 @@ export const fetchIsAgentOwner = (aiAgentID: string) => {
   return marketplaceRequest<CanEditResponse>({
     url: `/aiAgents/${aiAgentID}/canEdit`,
     method: "GET",
+  })
+}
+
+export const fetchPinTipi = (teamID: string, aiAgentID: string) => {
+  return agentRequest<Agent>({
+    url: `/teams/${teamID}/aiAgents/${aiAgentID}/pin`,
+    method: "POST",
+  })
+}
+
+export const fetchUnPinTipi = (teamID: string, aiAgentID: string) => {
+  return agentRequest<Agent>({
+    url: `/teams/${teamID}/aiAgents/${aiAgentID}/pin`,
+    method: "DELETE",
   })
 }

@@ -1,5 +1,8 @@
 import { SerializedStyles, css } from "@emotion/react"
 import { getColor } from "@illa-public/color-scheme"
+import { applyMobileStyle } from "@illa-public/utils"
+import decorateLeft from "../assets/decorate-left.svg"
+import decorateRight from "../assets/decorate-right.svg"
 
 export const modalCloseIconStyle = css`
   position: absolute;
@@ -39,14 +42,14 @@ export const requireStyle = css`
 
 export const modalDecorateLeftStyle = css`
   ${decorateStyle};
-  background-image: url("/create-team-modal/decorate-left.svg");
+  background-image: url(${decorateLeft});
   left: 0;
 `
 
 export const modalDecorateRightStyle = css`
   ${decorateStyle};
   width: 678px;
-  background-image: url("/create-team-modal/decorate-right.svg");
+  background-image: url(${decorateRight});
   right: 0;
 `
 
@@ -98,25 +101,44 @@ export const tipTextStyle = css`
   color: ${getColor("grayBlue", "04")};
 `
 
-export const errorMsgStyle: SerializedStyles = css`
-  position: relative;
-  font-size: 14px;
-  padding-left: 24px;
-  line-height: 22px;
-  color: ${getColor("orange", "03")};
-`
-
-export const errorIconStyle: SerializedStyles = css`
-  position: absolute;
-  font-size: 16px;
-  line-height: 0;
-  top: 3px;
-  left: 0;
-`
-
 export const formLabelStyle: SerializedStyles = css`
   font-size: 14px;
   line-height: 22px;
   font-weight: 500;
   color: ${getColor("grayBlue", "02")};
+`
+
+export const createBgStyle = css`
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: -1;
+  left: 0;
+  right: 0;
+`
+
+export const errorMsgStyle = css`
+  position: relative;
+  font-size: 14px;
+  padding-left: 24px;
+  line-height: 22px;
+  color: ${getColor("orange", "03")};
+  ${applyMobileStyle(css`
+    position: absolute;
+    font-size: 12px;
+    padding-left: 4px;
+    bottom: 0;
+    transform: translateY(100%);
+  `)}
+`
+
+export const errorIconStyle = css`
+  position: absolute;
+  font-size: 16px;
+  line-height: 0;
+  top: 3px;
+  left: 0;
+  ${applyMobileStyle(css`
+    display: none;
+  `)}
 `

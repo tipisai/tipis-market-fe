@@ -1,4 +1,4 @@
-import { FC, createContext } from "react"
+import { FC, createContext, useState } from "react"
 import { InfoContextInject, InfoProviderProps } from "./interface"
 
 export const InfoContext = createContext<InfoContextInject>(
@@ -7,11 +7,13 @@ export const InfoContext = createContext<InfoContextInject>(
 
 export const InfoProvider: FC<InfoProviderProps> = (props) => {
   const { userInfo, isMobile, children } = props
+  const [currentUserInfo, setUserInfo] = useState(userInfo)
   return (
     <InfoContext.Provider
       value={{
-        userInfo,
+        userInfo: currentUserInfo,
         isMobile,
+        setUserInfo,
       }}
     >
       {children}
