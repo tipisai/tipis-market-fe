@@ -1,14 +1,13 @@
 import { FC } from "react"
 import { MediaLayout } from "@/layout/mediaLayout"
-import { EntranceNavProps } from "./interface"
 import { EntranceNavMobile } from "./mobile"
 import { EntranceNavPC } from "./pc"
 
-export const EntranceNav: FC<EntranceNavProps> = (props) => {
+export const EntranceNav: FC = () => {
   return (
     <MediaLayout
-      desktopPage={<EntranceNavPC {...props} />}
-      mobilePage={<EntranceNavMobile {...props} />}
+      desktopPage={<EntranceNavPC />}
+      mobilePage={<EntranceNavMobile />}
     />
   )
 }

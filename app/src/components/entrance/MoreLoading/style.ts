@@ -7,7 +7,6 @@ export const loadingStyle = css`
   align-items: center;
   height: 40px;
 `
-
 export const loadingIconStyle = css`
   color: ${getColor("techPurple", "03")};
   height: 16px;

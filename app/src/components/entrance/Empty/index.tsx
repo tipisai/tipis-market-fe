@@ -1,8 +1,10 @@
 import { Empty } from "antd"
 import { useTranslation } from "next-i18next"
-import { FC } from "react"
+import { FC, useContext } from "react"
 import EmptyIcon from "@/assets/public/empty.svg?react"
 import { TagList } from "@/components/common/TagList"
+import { DASH_BOARD_UI_STATE_ACTION_TYPE } from "@/context/getListContext/interface"
+import { DashBoardUIStateContext } from "@/context/getListContext/listContext"
 import {
   emptyColorStyle,
   emptyIconStyle,
@@ -12,14 +14,22 @@ import {
 interface ListEmptyProps {
   tagList: string[]
   showRecommendTag?: boolean
-  handleClickEmptyTag?: (name?: string) => void
 }
 export const ListEmpty: FC<ListEmptyProps> = ({
   tagList,
   showRecommendTag,
-  handleClickEmptyTag,
 }) => {
   const { t } = useTranslation()
+  const { dispatch } = useContext(DashBoardUIStateContext)
+
+  const handleClick = (name?: string) => {
+    if (!name) return
+    dispatch({
+      type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_RECOMMEND_TAG,
+      payload: name,
+    })
+  }
+
   return (
     <div css={listEmptyContainerStyle}>
       <Empty
@@ -31,7 +41,7 @@ export const ListEmpty: FC<ListEmptyProps> = ({
         <TagList
           tagList={tagList}
           isEmptyRecommend
-          handleTagChange={handleClickEmptyTag}
+          handleTagChange={handleClick}
         />
       )}
     </div>

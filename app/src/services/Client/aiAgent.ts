@@ -3,8 +3,9 @@ import {
   marketplaceRequest,
   publicMarketplaceRequest,
 } from "@illa-public/illa-net"
-import { MarketAgentListData } from "@illa-public/market-agent/service"
-import { Agent } from "@illa-public/public-types"
+import { Agent, IMarketAgentListData } from "@illa-public/public-types"
+import { PAGESIZE } from "@/constants/page"
+import { IDashBoardUIState } from "@/context/getListContext/interface"
 import {
   CanEditResponse,
   PRODUCT_SORT_BY,
@@ -22,7 +23,7 @@ export const fetchStarAIgentList = (
     search,
     hashtags,
   } = params
-  return marketplaceRequest<MarketAgentListData>({
+  return marketplaceRequest<IMarketAgentListData>({
     url: `/aiAgents`,
     method: "GET",
     signal: signal,
@@ -37,26 +38,27 @@ export const fetchStarAIgentList = (
 }
 
 export const fetchAIgentList = (
-  params: ProductListParams,
+  params: IDashBoardUIState,
   signal?: AbortSignal,
 ) => {
   const {
     page = 1,
-    limit = 10,
     sortedBy = PRODUCT_SORT_BY.POPULAR,
     search,
-    hashtags,
+    hashTag,
+    isOfficial,
   } = params
-  return publicMarketplaceRequest<MarketAgentListData>({
+  return publicMarketplaceRequest<IMarketAgentListData>({
     url: `/aiAgents`,
     method: "GET",
     signal: signal,
     params: {
       page,
-      limit,
+      limit: PAGESIZE,
       sortedBy,
       search,
-      hashtags,
+      hashtags: hashTag,
+      isOfficial: isOfficial,
     },
   })
 }
@@ -72,19 +74,5 @@ export const fetchIsAgentOwner = (aiAgentID: string) => {
   return marketplaceRequest<CanEditResponse>({
     url: `/aiAgents/${aiAgentID}/canEdit`,
     method: "GET",
-  })
-}
-
-export const fetchPinTipi = (teamID: string, aiAgentID: string) => {
-  return agentRequest<Agent>({
-    url: `/teams/${teamID}/aiAgents/${aiAgentID}/pin`,
-    method: "POST",
-  })
-}
-
-export const fetchUnPinTipi = (teamID: string, aiAgentID: string) => {
-  return agentRequest<Agent>({
-    url: `/teams/${teamID}/aiAgents/${aiAgentID}/pin`,
-    method: "DELETE",
   })
 }

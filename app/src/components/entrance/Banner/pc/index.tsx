@@ -1,9 +1,11 @@
 import Icon from "@ant-design/icons"
 import { SearchIcon } from "@illa-public/icon"
 import { Input } from "antd"
+import { debounce } from "lodash-es"
 import { useTranslation } from "next-i18next"
-import { ChangeEvent, FC } from "react"
-import { BannerProps } from "../interface"
+import { ChangeEvent, FC, useCallback, useContext, useMemo } from "react"
+import { DASH_BOARD_UI_STATE_ACTION_TYPE } from "@/context/getListContext/interface"
+import { DashBoardUIStateContext } from "@/context/getListContext/listContext"
 import {
   descriptionStyle,
   headerStyle,
@@ -12,37 +14,34 @@ import {
   titleStyle,
 } from "./style"
 
-export const BannerPC: FC<BannerProps> = ({
-  titleAfter,
-  titleBefore,
-  description,
-  feature,
-  search,
-  handleSearchChange,
-  onSearch,
-}) => {
+export const BannerPC: FC = () => {
   const { t } = useTranslation()
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    // track(ILLA_MIXPANEL_EVENT_TYPE.REQUEST, {
-    //   element: "search",
-    //   parameter1: val,
-    // })
-    handleSearchChange?.(val)
-  }
+  const { dispatch, dashboardUIState } = useContext(DashBoardUIStateContext)
 
-  const handleOnFocus = () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.FOCUS, { element: "search" })
-  }
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const v = e.target.value
+      dispatch({
+        type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_SEARCH,
+        payload: v,
+      })
+    },
+    [dispatch],
+  )
+
+  const debounceHandleChange = useMemo(() => {
+    return debounce(handleChange, 160)
+  }, [handleChange])
+
   return (
     <div css={headerStyle}>
       <h1 css={headerTitleStyle}>
-        <span>{t(titleBefore)} </span>
-        <span css={titleStyle}>{t(feature)} </span>
-        <span>{t(titleAfter)}</span>
+        <span>{t("title.ai-agent.title-1")} </span>
+        <span css={titleStyle}>{t("title.ai-agent.feature")} </span>
+        <span>{t("title.ai-agent.title-2")}</span>
       </h1>
-      <p css={descriptionStyle}>{t(description)}</p>
+      <p css={descriptionStyle}>{t("description.ai-agent")}</p>
       <Input
         style={{
           width: "800px",
@@ -56,11 +55,9 @@ export const BannerPC: FC<BannerProps> = ({
           },
         }}
         prefix={<Icon component={SearchIcon} css={searchIconStyle} />}
-        value={search}
+        value={dashboardUIState.search}
         placeholder={t("dashboard.search")}
-        onChange={handleOnChange}
-        onFocus={handleOnFocus}
-        onPressEnter={onSearch}
+        onChange={debounceHandleChange}
       />
     </div>
   )

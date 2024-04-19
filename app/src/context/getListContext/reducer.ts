@@ -60,11 +60,20 @@ export const reducer = (
         sortedBy: PRODUCT_SORT_BY.POPULAR,
         search: undefined,
         hashTag: action.payload,
+        isOfficial: false,
       }
       break
     }
     case DASH_BOARD_UI_STATE_ACTION_TYPE.RESET_PARAMS: {
       newState = INIT_DASH_BOARD_UI_STATE
+      break
+    }
+    case DASH_BOARD_UI_STATE_ACTION_TYPE.SET_IS_OFFICIAL: {
+      newState = {
+        ...state,
+        page: INITIAL_PAGE,
+        isOfficial: action.payload,
+      }
       break
     }
   }

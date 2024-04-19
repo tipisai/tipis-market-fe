@@ -1,66 +1,97 @@
+import { Checkbox } from "antd"
+import { CheckboxChangeEvent } from "antd/es/checkbox"
+import { useTranslation } from "next-i18next"
 import { useSearchParams } from "next/navigation"
-import { FC, useCallback } from "react"
+import { useRouter } from "next/router"
+import { FC, useContext } from "react"
 import BlackTab from "@/components/common/BlackTab"
 import { SingleTag, TagList } from "@/components/common/TagList"
 import { SEARCH_KEY } from "@/constants/page"
+import { DASH_BOARD_UI_STATE_ACTION_TYPE } from "@/context/getListContext/interface"
+import { DashBoardUIStateContext } from "@/context/getListContext/listContext"
+import { PRODUCT_SORT_BY } from "@/interface/common"
 import { ContentHeaderProps } from "../interface"
-import { sortWrapperStyle } from "./style"
+import { sortHeaderStyle, sortWrapperStyle } from "./style"
 
-export const SortComponentPC: FC<ContentHeaderProps> = ({
-  sort,
-  sortOptions,
-  activeTag,
-  tagList,
-  handleSortChange,
-  handleCloseTag,
-  handleTagChange,
-}) => {
+export const SortComponentPC: FC<ContentHeaderProps> = ({ tagList }) => {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const options = [
+    {
+      label: t("dashboard.sort-type.popular"),
+      value: PRODUCT_SORT_BY.POPULAR,
+      key: PRODUCT_SORT_BY.POPULAR,
+    },
+    {
+      label: t("dashboard.sort-type.recent"),
+      value: PRODUCT_SORT_BY.LATEST,
+      key: PRODUCT_SORT_BY.LATEST,
+    },
+  ]
   const searchParams = useSearchParams()
   const showCurrentTag = searchParams.get(SEARCH_KEY.CURRENT_HASH_TAG)
 
-  const tabItems = sortOptions
-    .filter(({ hidden }) => !hidden)
-    .map(({ label, value }) => ({
-      label,
-      key: value,
-    }))
-
-  const onChange = useCallback(
-    (v: string) => {
-      if (v === sort) return
-      // track(ILLA_MIXPANEL_EVENT_TYPE.CHANGE, {
-      //   element: "filter_select",
-      //   parameter1: v,
-      // })
-      // sendTagEvent({
-      //   action: GTagEvent.CLICK,
-      //   category: GTagCategory.SORT_CLICK,
-      //   label: v,
-      // })
-      handleSortChange && handleSortChange(v)
-    },
-    [handleSortChange, sort],
+  const { dispatch, dashboardUIState: marketState } = useContext(
+    DashBoardUIStateContext,
   )
+
+  const onSortChange = (v: string) => {
+    if (v === marketState.sortedBy) return
+    dispatch({
+      type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_SORTED_BY,
+      payload: v as PRODUCT_SORT_BY,
+    })
+  }
+
+  const onTagChange = (v?: string) => {
+    dispatch({
+      type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_HASH_TAG,
+      payload: v,
+    })
+  }
+
+  const onOfficialChange = (e: CheckboxChangeEvent) => {
+    const v = e.target.checked
+    dispatch({
+      type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_IS_OFFICIAL,
+      payload: v,
+    })
+  }
+
+  const handleCloseSingleTag = async () => {
+    await router.replace({ query: undefined }, undefined, {
+      shallow: true,
+    })
+    dispatch({
+      type: DASH_BOARD_UI_STATE_ACTION_TYPE.RESET_PARAMS,
+      payload: undefined,
+    })
+  }
 
   return (
     <div css={sortWrapperStyle}>
-      <BlackTab
-        tabBarStyle={{
-          marginBottom: 0,
-        }}
-        activeKey={sort}
-        onChange={onChange}
-        items={tabItems}
-      />
+      <div css={sortHeaderStyle}>
+        <BlackTab
+          tabBarStyle={{
+            marginBottom: 0,
+          }}
+          activeKey={marketState.sortedBy}
+          onChange={onSortChange}
+          items={options}
+        />
+        <Checkbox checked={marketState.isOfficial} onChange={onOfficialChange}>
+          {t("_Official")}
+        </Checkbox>
+      </div>
       {!!showCurrentTag ? (
-        <SingleTag onCloseTag={handleCloseTag} />
+        <SingleTag onCloseTag={handleCloseSingleTag} />
       ) : (
         tagList &&
         tagList.length > 0 && (
           <TagList
             tagList={tagList}
-            handleTagChange={handleTagChange}
-            activeTag={activeTag}
+            handleTagChange={onTagChange}
+            activeTag={marketState.hashTag}
           />
         )
       )}

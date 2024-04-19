@@ -1,58 +1,22 @@
-import { css } from "@emotion/react"
-import { applyMobileStyle } from "@illa-public/utils"
 import { GetServerSideProps } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import { FC, useEffect, useMemo, useRef } from "react"
-import { AgentCardContainer } from "@/components/ai-agent/AgentCardContainer"
-import { FeatureLabelCard } from "@/components/ai-agent/FeatureLabel"
+import { FC, useEffect, useRef } from "react"
 import HomeStructuredData from "@/components/ai-agent/HomeStructuredData"
 import { SocialMedia } from "@/components/common/SocialMedia"
-import { Banner } from "@/components/entrance/Banner"
-import { ListEmpty } from "@/components/entrance/Empty"
-import { ListLoading } from "@/components/entrance/ListLoading"
-import { MoreLoading } from "@/components/entrance/MoreLoading"
-import { SortComponent } from "@/components/entrance/SortComponent"
+import Entrance from "@/components/entrance"
 import { INITIAL_PAGE, PAGESIZE } from "@/constants/page"
+import { DashboardUIStateProvider } from "@/context/getListContext/listContext"
 import { PRODUCT_SORT_BY } from "@/interface/common"
 import { AgentPageProps } from "@/interface/pageIndex"
 import Layout from "@/layout/entrancePage"
 import { fetchAIAgentList } from "@/services/Server/agent"
 
-export const contentStyle = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  padding: 0 20px 48px 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  ${applyMobileStyle(css`
-    gap: 20px;
-    padding: 0 20px 40px 20px;
-  `)}
-`
-
 const AgentPage: FC<AgentPageProps> = (props) => {
-  const { agent } = props
+  const { listData } = props
   const { t } = useTranslation()
   const isServerInitPage = useRef(true)
-
-  // const getListProps = useGetList(agent)
-  const getListProps = useget(agent)
-
-  const noData = getListProps?.agentList.length === 0
-  const bannerContent = useMemo(
-    () => ({
-      titleBefore: "title.ai-agent.title-1",
-      titleAfter: "title.ai-agent.title-2",
-      description: "description.ai-agent",
-      feature: "title.ai-agent.feature",
-    }),
-    [],
-  )
 
   useEffect(() => {
     isServerInitPage.current = false
@@ -62,61 +26,24 @@ const AgentPage: FC<AgentPageProps> = (props) => {
   }, [])
 
   return (
-    <Layout
-      handleSearchChange={getListProps?.handleSearchChange}
-      onSearch={getListProps?.onSearch}
-      search={getListProps?.search}
-    >
-      <Head>
-        <title>{t("meta.meta-title.ai-agent")}</title>
-        <meta
-          name="description"
-          content={t("meta.meta-description.ai-agent") || ""}
-        />
-        <meta name="keywords" content={t("keywords_agent") || ""} />
-      </Head>
-      <HomeStructuredData />
-      <SocialMedia
-        title={t("meta.meta-title.ai-agent")}
-        description={t("meta.meta-description.ai-agent")}
-      />
-      <div css={contentStyle} onScroll={getListProps?.handleCardScroll}>
-        <Banner
-          {...bannerContent}
-          search={getListProps?.search}
-          handleSearchChange={getListProps?.handleSearchChange}
-          onSearch={getListProps?.onSearch}
-        />
-        <SortComponent
-          sort={getListProps?.sort}
-          sortOptions={getListProps?.sortOptions}
-          handleSortChange={getListProps?.handleSortChange}
-          activeTag={getListProps?.activeTag}
-          tagList={getListProps?.tagList}
-          handleCloseTag={getListProps?.handleCloseTag}
-          handleTagChange={getListProps?.handleTagChange}
-        />
-        {getListProps?.reLoading ? (
-          <ListLoading />
-        ) : noData ? (
-          <ListEmpty
-            tagList={getListProps?.cacheTagList}
-            showRecommendTag={getListProps?.showRecommendTag}
-            handleClickEmptyTag={getListProps?.handleClickEmptyTag}
+    <DashboardUIStateProvider>
+      <Layout>
+        <Head>
+          <title>{t("meta.meta-title.ai-agent")}</title>
+          <meta
+            name="description"
+            content={t("meta.meta-description.ai-agent") || ""}
           />
-        ) : (
-          <>
-            <AgentCardContainer agentList={getListProps?.agentList} />
-            {getListProps?.hasMoreData && getListProps?.loading && (
-              <MoreLoading />
-            )}
-          </>
-        )}
-        {!getListProps?.hasMoreData && !getListProps?.loading && (
-          <FeatureLabelCard />
-        )}
-      </div>
-    </Layout>
+          <meta name="keywords" content={t("keywords_agent") || ""} />
+        </Head>
+        <HomeStructuredData />
+        <SocialMedia
+          title={t("meta.meta-title.ai-agent")}
+          description={t("meta.meta-description.ai-agent")}
+        />
+        <Entrance listData={listData} />
+      </Layout>
+    </DashboardUIStateProvider>
   )
 }
 
@@ -132,7 +59,7 @@ export const getServerSideProps: GetServerSideProps<AgentPageProps> = async (
     hashtags: query.currentHashtag as string,
     isOfficial: false,
   })
-  return { props: { ...translate, agent: response } }
+  return { props: { ...translate, listData: response } }
 }
 
 export default AgentPage

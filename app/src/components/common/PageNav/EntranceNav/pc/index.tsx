@@ -4,7 +4,6 @@ import Logo from "@/assets/public/illa-logo-puple.svg?react"
 import { CreateTeamButton } from "@/components/common/CreateTeamButton"
 import { NavHeaderOptions } from "@/components/common/PageNav/NavHeaderOptions"
 import { InfoContext } from "@/context/infoContext"
-import { EntranceNavProps } from "../interface"
 import {
   createGroupButtonStyle,
   flexStyle,
@@ -13,20 +12,12 @@ import {
   rightHeaderStyle,
 } from "./style"
 
-export const EntranceNavPC: FC<EntranceNavProps> = () => {
+export const EntranceNavPC: FC = () => {
   const { userInfo } = useContext(InfoContext)
-
-  const handleLogoClick = () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "logo" })
-  }
 
   return (
     <div css={navStyle}>
-      <Link
-        css={flexStyle}
-        href={`${process.env.ILLA_CLOUD_URL}`}
-        onClick={handleLogoClick}
-      >
+      <Link css={flexStyle} href={`${process.env.ILLA_CLOUD_URL}`}>
         <Logo css={logoStyle} />
       </Link>
       <div css={rightHeaderStyle}>

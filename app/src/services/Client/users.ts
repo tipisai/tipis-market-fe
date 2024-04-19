@@ -1,16 +1,17 @@
 import { authCloudRequest } from "@illa-public/illa-net"
-import { CurrentUserInfo } from "@illa-public/public-types"
+import { BaseUserInfo } from "@illa-public/public-types"
 
-export type IPinItem = {
+export interface IPinedTipiTabInfo {
   tabID: string
-  tabIcon: string
   tabName: string
+  tabIcon: string
   tipiID: string
   tipiOwnerTeamIdentity: string
 }
-export interface ITempUserInfo extends CurrentUserInfo {
+
+export interface ICurrentUserInfo extends BaseUserInfo {
   personalization: {
-    pinedTipisTabs: Record<string, IPinItem[]>
+    pinedTipisTabs: Record<string, IPinedTipiTabInfo[]>
   }
 }
 
@@ -28,9 +29,10 @@ export const fetchLogout = async () => {
   })
 }
 
-export const fetchUserInfo = async () => {
-  return authCloudRequest<ITempUserInfo>({
-    method: "get",
-    url: "/users",
+export const putPersonalization = async (data: Record<string, unknown>) => {
+  return authCloudRequest<ICurrentUserInfo>({
+    method: "PUT",
+    url: "/users/personalization",
+    data: data,
   })
 }

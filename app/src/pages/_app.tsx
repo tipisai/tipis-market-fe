@@ -1,5 +1,5 @@
 import { CacheProvider, EmotionCache, Global } from "@emotion/react"
-import { CurrentUserInfo } from "@illa-public/public-types"
+import { BaseUserInfo } from "@illa-public/public-types"
 import { TipisTrack } from "@illa-public/track-utils"
 import { initGTMConfig } from "@illa-public/utils"
 import { App as AntdApp, ConfigProvider, ThemeConfig } from "antd"
@@ -14,7 +14,7 @@ import "@/api/http/base"
 import defaultThemeToken from "@/assets/theme/theme-default.json"
 import { MOBILE_USER_AGENT } from "@/constants/regExp"
 import { InfoProvider } from "@/context/infoContext"
-import { ITempUserInfo } from "@/services/Client/users"
+import { ICurrentUserInfo } from "@/services/Client/users"
 import { fetchUserInfoByToken } from "@/services/Server/users"
 import { globalStyles } from "@/style"
 import { AppPropsWithLayout } from "@/types/nextjs"
@@ -27,7 +27,7 @@ export interface MyAppProps extends AppPropsWithLayout {
   emotionCache?: EmotionCache
   language?: string
   token?: string
-  userInfo?: ITempUserInfo | undefined
+  userInfo?: ICurrentUserInfo | undefined
   isMobile?: boolean
 }
 
@@ -164,7 +164,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     TIPIS_TOKEN = token
   }
 
-  let userInfo: CurrentUserInfo | undefined
+  let userInfo: BaseUserInfo | undefined
   try {
     userInfo = await fetchUserInfoByToken(TIPIS_TOKEN as string)
   } catch (e) {

@@ -21,3 +21,12 @@ export const tagContainerStyle = css`
 export const singleTagContainerStyle = css`
   width: 100%;
 `
+
+export const sortHeaderStyle = css`
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid ${getColor("grayBlue", "08")};
+`

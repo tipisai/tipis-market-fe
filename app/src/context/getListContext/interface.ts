@@ -15,6 +15,7 @@ export enum DASH_BOARD_UI_STATE_ACTION_TYPE {
   SET_HASH_TAG = "SET_HASH_TAG",
   SET_RECOMMEND_TAG = "SET_RECOMMEND_TAG",
   RESET_PARAMS = "RESET_PARAMS",
+  SET_IS_OFFICIAL = "SET_IS_OFFICIAL",
 }
 
 export interface IDashBoardUIStateBaseAction<T = unknown> {
@@ -49,6 +50,10 @@ export interface ISetRecommendTagAction
 export interface IResetParamsAction extends IDashBoardUIStateBaseAction {
   type: DASH_BOARD_UI_STATE_ACTION_TYPE.RESET_PARAMS
 }
+export interface ISetIsOfficialAction
+  extends IDashBoardUIStateBaseAction<boolean> {
+  type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_IS_OFFICIAL
+}
 
 export type TDashboardUIStateAction =
   | ISetPageAction
@@ -57,3 +62,4 @@ export type TDashboardUIStateAction =
   | ISetHashTagAction
   | ISetRecommendTagAction
   | IResetParamsAction
+  | ISetIsOfficialAction

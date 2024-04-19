@@ -1,3 +1,4 @@
+import { v4 } from "uuid"
 import { getAuthToken } from "@/utils/auth"
 
 export const toRunAgent = (
@@ -5,8 +6,9 @@ export const toRunAgent = (
   teamIdentifier: string,
   ownerTeamIdentifier: string,
 ) => {
+  const tabID = v4()
   const token = getAuthToken()
-  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${teamIdentifier}/tipi/${agentID}/run?token=${token}&ownerTeamIdentifier=${ownerTeamIdentifier}`
+  window.location.href = `${process.env.ILLA_CLOUD_URL}/workspace/${teamIdentifier}/tipi/${agentID}/run/${agentID}?token=${token}&ownerTeamIdentifier=${ownerTeamIdentifier}`
 }
 
 export const toEditAgent = (agentID: string, teamIdentifier: string) => {

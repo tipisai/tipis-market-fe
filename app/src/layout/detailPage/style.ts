@@ -1,4 +1,5 @@
 import { css } from "@emotion/react"
+import { applyMobileStyle } from "@illa-public/utils"
 
 export const contentContainerStyle = css`
   display: flex;
@@ -6,11 +7,25 @@ export const contentContainerStyle = css`
   flex-direction: column;
 `
 
-export const contentStyle = css`
-  width: 100%;
+export const mainStyle = css`
   height: 100%;
+  width: 100%;
   display: flex;
-  overflow-x: hidden;
-  overflow-y: auto;
   justify-content: center;
+  overflow-y: auto;
+`
+
+export const contentStyle = css`
+  height: 100%;
+  width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  ${applyMobileStyle(css`
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  `)}
 `

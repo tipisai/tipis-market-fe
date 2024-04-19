@@ -1,13 +1,15 @@
 import Icon from "@ant-design/icons"
 import { SearchIcon } from "@illa-public/icon"
 import { Input } from "antd"
+import { debounce } from "lodash-es"
 import { useTranslation } from "next-i18next"
 import Link from "next/link"
-import { ChangeEvent, FC, useContext } from "react"
+import { ChangeEvent, FC, useCallback, useContext, useMemo } from "react"
 import Logo from "@/assets/public/illa-logo-puple.svg?react"
 import { NavHeaderOptions } from "@/components/common/PageNav/NavHeaderOptions"
+import { DASH_BOARD_UI_STATE_ACTION_TYPE } from "@/context/getListContext/interface"
+import { DashBoardUIStateContext } from "@/context/getListContext/listContext"
 import { InfoContext } from "@/context/infoContext"
-import { EntranceNavProps } from "../interface"
 import {
   flexStyle,
   logoStyle,
@@ -16,50 +18,42 @@ import {
   searchIconStyle,
 } from "./style"
 
-export const EntranceNavMobile: FC<EntranceNavProps> = (props) => {
-  const { search, onSearch, handleSearchChange } = props
+export const EntranceNavMobile: FC = () => {
   const { t } = useTranslation()
   const { userInfo } = useContext(InfoContext)
+  const { dispatch, dashboardUIState } = useContext(DashBoardUIStateContext)
 
-  // parameter
-  const handleLogoClick = () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.CLICK, { element: "logo" })
-  }
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const v = e.target.value
+      dispatch({
+        type: DASH_BOARD_UI_STATE_ACTION_TYPE.SET_SEARCH,
+        payload: v,
+      })
+    },
+    [dispatch],
+  )
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    // track(ILLA_MIXPANEL_EVENT_TYPE.REQUEST, {
-    //   element: "search",
-    //   parameter1: val,
-    // })
-    handleSearchChange?.(val)
-  }
-  const handleOnFocus = () => {
-    // track(ILLA_MIXPANEL_EVENT_TYPE.FOCUS, { element: "search" })
-  }
+  const debounceHandleChange = useMemo(() => {
+    return debounce(handleChange, 160)
+  }, [handleChange])
 
   return (
     <div css={navStyle}>
-      <Link
-        css={flexStyle}
-        href={`${process.env.ILLA_CLOUD_URL}`}
-        onClick={handleLogoClick}
-      >
+      <Link css={flexStyle} href={`${process.env.ILLA_CLOUD_URL}`}>
         <Logo css={logoStyle} />
       </Link>
       <div css={rightHeaderStyle}>
         <Input
           prefix={<Icon component={SearchIcon} css={searchIconStyle} />}
-          value={search}
+          value={dashboardUIState.search}
           placeholder={t("dashboard.search")}
           size="middle"
           style={{
             borderRadius: "20px",
             padding: "9px 16px",
           }}
-          onChange={handleOnChange}
-          onFocus={handleOnFocus}
-          onPressEnter={onSearch}
+          onChange={debounceHandleChange}
         />
         <NavHeaderOptions userInfo={userInfo} />
       </div>

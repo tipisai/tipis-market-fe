@@ -1,4 +1,4 @@
-import { MarketAgentListData } from "@illa-public/market-agent/service"
+import { IMarketAgentListData } from "@illa-public/public-types"
 import { GetServerSideProps } from "next"
 import { ISitemapField, getServerSideSitemapLegacy } from "next-sitemap"
 import { PRODUCT_SORT_BY } from "../../interface/common"
@@ -12,8 +12,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       page: 1,
       limit: 50,
       sortedBy: PRODUCT_SORT_BY.POPULAR,
+      isOfficial: false,
     })
-    agentSiteMap = (agentListResponse as MarketAgentListData).products.map(
+    agentSiteMap = (agentListResponse as IMarketAgentListData).products.map(
       (agent) => {
         return {
           loc: `${process.env.ILLA_MARKET_URL}/ai-agent/${agent.aiAgent?.aiAgentID}/detail`,

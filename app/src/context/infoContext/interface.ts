@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { ITempUserInfo } from "@/services/Client/users"
+import { ICurrentUserInfo } from "@/services/Client/users"
 
 export interface Tag {
   name: string
@@ -7,9 +7,9 @@ export interface Tag {
 }
 
 export interface InfoContextInject {
-  userInfo: ITempUserInfo | undefined
+  userInfo: ICurrentUserInfo | undefined
   isMobile: boolean
-  setUserInfo: (userInfo: ITempUserInfo) => void
+  setUserInfo: (userInfo: ICurrentUserInfo) => void
 }
 
 export interface InfoProviderProps

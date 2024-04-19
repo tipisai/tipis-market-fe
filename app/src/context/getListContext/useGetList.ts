@@ -1,18 +1,19 @@
-import { MarketAgentListData } from "@illa-public/market-agent"
+import { IMarketAgentListData } from "@illa-public/public-types"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { INITIAL_PAGE, LIMIT_ITEMS } from "@/constants/page"
+import { INITIAL_PAGE } from "@/constants/page"
 import { fetchAIgentList } from "@/services/Client/aiAgent"
 import { IDashBoardUIState } from "./interface"
 
 export const useGetList = (
   uiState: IDashBoardUIState,
   isInitPage: boolean,
-  listResponse: MarketAgentListData,
+  listResponse: IMarketAgentListData,
+  extraCallback: () => void,
 ) => {
   const [isLoading, setLoading] = useState(false)
   const controllerRef = useRef<AbortController | null>(null)
   const [currentListResponse, setCurrentListResponse] =
-    useState<MarketAgentListData>(listResponse)
+    useState<IMarketAgentListData>(listResponse)
 
   const getMarketList = useCallback(async () => {
     setLoading(true)
@@ -23,18 +24,12 @@ export const useGetList = (
       controllerRef.current.abort()
       controllerRef.current = controller
     }
-    const params = {
-      ...uiState,
-      limit: 40,
-    }
     try {
-      const res = await fetchAIgentList(params, controller.signal)
-      if (params.page > INITIAL_PAGE) {
+      const res = await fetchAIgentList(uiState, controller.signal)
+      if (uiState.page > INITIAL_PAGE) {
         setCurrentListResponse((prevState) => {
           const product = [...prevState.products]
-          const newProduct = product
-            .concat(res.data.products)
-            .slice(-LIMIT_ITEMS)
+          const newProduct = product.concat(res.data.products)
           return {
             ...prevState,
             ...res.data,
@@ -47,8 +42,9 @@ export const useGetList = (
     } catch (e: unknown) {
     } finally {
       setLoading(false)
+      extraCallback()
     }
-  }, [uiState])
+  }, [extraCallback, uiState])
 
   useEffect(() => {
     if (!isInitPage) {

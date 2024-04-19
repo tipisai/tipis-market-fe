@@ -1,5 +1,5 @@
-import { MarketAgentListData } from "@illa-public/market-agent/service"
+import { IMarketAgentListData } from "@illa-public/public-types"
 
 export interface AgentPageProps {
-  agent: MarketAgentListData
+  listData: IMarketAgentListData
 }

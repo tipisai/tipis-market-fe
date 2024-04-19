@@ -4,24 +4,12 @@ import { contentContainerStyle, contentStyle } from "./style"
 
 export interface LayoutProps {
   children: ReactNode
-  search?: string
-  handleSearchChange?: (value?: string) => void
-  onSearch?: () => void
 }
 
-const Layout: FC<LayoutProps> = ({
-  children,
-  search,
-  onSearch,
-  handleSearchChange,
-}) => {
+const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div css={contentContainerStyle}>
-      <EntranceNav
-        search={search}
-        handleSearchChange={handleSearchChange}
-        onSearch={onSearch}
-      />
+      <EntranceNav />
       <main css={contentStyle}>{children}</main>
     </div>
   )

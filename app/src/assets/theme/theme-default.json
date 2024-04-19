@@ -202,7 +202,8 @@
     "Tabs": {
       "borderRadius": 10,
       "borderRadiusLG": 12,
-      "cardGutter": 4
+      "cardGutter": 4,
+      "lineWidth": 0
     },
     "Tooltip": {
       "colorText": "rgb(29, 33, 41)",
