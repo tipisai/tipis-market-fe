@@ -1,8 +1,9 @@
 import Icon from "@ant-design/icons"
 import { Avatar } from "@illa-public/avatar"
-import { ForkIcon, PlayOutlineIcon, StarOutlineIcon } from "@illa-public/icon"
+import { ForkIcon, PlayOutlineIcon } from "@illa-public/icon"
 import { formatNumForAgent } from "@illa-public/utils"
 import { FC } from "react"
+import OfficialIcon from "@/assets/public/official-icon.svg?react"
 import CardHashtags from "./BaseHashTag"
 import { MarketAgentCardProps } from "./interface"
 import {
@@ -16,6 +17,7 @@ import {
   headerStyle,
   iconStyle,
   nameStyle,
+  officialIconStyle,
   teamAvatarStyle,
   teamInfoContainerStyle,
   teamInfoStyle,
@@ -41,6 +43,9 @@ export const MarketAgentCard: FC<MarketAgentCardProps> = (props) => {
             <span css={teamNameStyle}>
               {marketplace?.contributorTeam?.name}
             </span>
+            {marketplace?.isOfficial && (
+              <Icon component={OfficialIcon} css={officialIconStyle} />
+            )}
           </div>
         </div>
         <div css={actionContainerStyle}>
@@ -48,10 +53,6 @@ export const MarketAgentCard: FC<MarketAgentCardProps> = (props) => {
             <div css={actionCountStyle}>
               <Icon component={ForkIcon} css={iconStyle} />
               {formatNumForAgent(marketplace?.numForks)}
-            </div>
-            <div css={actionCountStyle}>
-              <Icon component={StarOutlineIcon} css={iconStyle} />
-              {formatNumForAgent(marketplace?.numStars)}
             </div>
             <div css={actionCountStyle}>
               <Icon component={PlayOutlineIcon} css={iconStyle} />

@@ -172,3 +172,7 @@ export const descriptionStyle = css`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 `
+
+export const officialIconStyle = css`
+  font-size: 12px;
+`
