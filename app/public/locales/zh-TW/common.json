@@ -1,0 +1,164 @@
+{
+  "pin_error": "置頂失敗，請重試。",
+  "pin_suc": "成功置頂。",
+  "detail": {
+    "operation": {
+      "run": "執行",
+      "fork": "分叉",
+      "share": "分享"
+    },
+    "label": {
+      "variable": "變數",
+      "prompt": "提示"
+    }
+  },
+  "pin": "置頂",
+  "user_management": {
+    "modal": {
+      "social_media": {
+        "default_text": {
+          "agent": "我剛發現一個有用的 Tipi，名叫 {{tipisName}}"
+        },
+        "label": "分享至"
+      },
+      "contribute": {
+        "label": "透過連結分享",
+        "desc": "任何人都可以透過此連結查看。",
+        "default_text": {
+          "agent": "我剛發現一個有用的 Tipi，名叫 {{tipisName}}。立即試試：{{tipisLink}}"
+        }
+      },
+      "title": {
+        "invite_members": "邀請成員",
+        "share_agent": "分享",
+        "contribute": "貢獻"
+      },
+      "tab": {
+        "with_team": "與團隊成員分享"
+      }
+    }
+  },
+  "homepage": {
+    "edit_tipi": {
+      "modal": {
+        "knowledge": "知識"
+      }
+    },
+    "team_modal": {
+      "title": "建立團隊",
+      "team_name": "團隊名稱",
+      "team_name_empty": "請輸入團隊名稱",
+      "team_domain": "團隊識別符",
+      "team_domain_empty": "請輸入識別符",
+      "team_domain_invalid_character": "僅允許字母、數字和_。必須以字母或數字開頭和結尾。",
+      "team_domain_invalid_length": "支援最多200個字元",
+      "tip": {
+        "team_identifier": "這將添加到您團隊的 URL 中。請在200個字元內使用字母或數字（例如 tipis）"
+      },
+      "create": "建立"
+    }
+  },
+  "pin_multi_team_title": "請確認團隊",
+  "team": {
+    "select_team": {
+      "title": {
+        "run": "執行",
+        "create": "建立"
+      },
+      "select_button": "確認"
+    },
+    "create": {
+      "fail_same_identifier": "識別符已存在，請更改。"
+    }
+  },
+  "create_agent": "建立",
+  "team_create_suc": "成功建立團隊。",
+  "page": {
+    "user": {
+      "sign_in": {
+        "tips": {
+          "fail_account": "登入失敗"
+        }
+      }
+    },
+    "workspace": {
+      "modal": {
+        "free_team": {
+          "cannot_create": {
+            "button": "確定",
+            "title": "建立失敗",
+            "desc": "您已達到團隊數量上限"
+          }
+        }
+      }
+    }
+  },
+  "team_create_fail": "建立失敗",
+  "network_error": "網路錯誤，請稍後再試。",
+  "back": "返回",
+  "dashboard": {
+    "search": "搜尋",
+    "sort-type": {
+      "popular": "最受歡迎",
+      "recent": "最新"
+    }
+  },
+  "login": "登入",
+  "sign-up": "免費註冊",
+  "title": {
+    "ai-agent": {
+      "title-1": "歡迎來到",
+      "feature": "市場",
+      "title-2": "Tipi"
+    }
+  },
+  "description": {
+    "ai-agent": "發現專為資料分析、文件檢索、報告生成、圖表創建等特定任務訂製的 Tipi，一鍵即用，Tipi 的可能性無限！"
+  },
+  "status": {
+    "403": {
+      "des": "權限不足"
+    },
+    "404": {
+      "des": "頁面未找到",
+      "again": "重試"
+    },
+    "500": {
+      "des": "內部伺服器錯誤"
+    },
+    "blank": "這裡沒有 Tipi",
+    "back": "返回",
+    "mobile_forbidden": "請前往桌面進行操作。"
+  },
+  "official": "只看官方",
+  "meta": {
+    "meta-title": {
+      "ai-agent": "Tipi 市場 | Tipis AI"
+    },
+    "meta-description": {
+      "ai-agent": "Tipi 市場匯集了針對特定任務訂製的 Tipi，如資料匯總，簡化您的工作量，節省大量時間。"
+    }
+  },
+  "keywords_agent": "圖表生成，資料分析，資料報告，ChatGPT，OpenAI",
+  "dayjs": {
+    "just_now": "剛剛"
+  },
+  "profile": {
+    "setting": {
+      "message": {
+        "save_fail": "保存更改失敗。"
+      }
+    }
+  },
+  "empty_copied_tips": "複製失敗。",
+  "copied": "已複製",
+  "editor": {
+    "action": {
+      "panel": {
+        "btn": {
+          "new": "新增"
+        }
+      }
+    }
+  }
+}
