@@ -339,7 +339,7 @@ export const ActionGroup: FC<OperationalProps> = ({
       />
       <MarketShareModal
         title={`${t("user_management.modal.social_media.default_text.agent", {
-          agentName: tipisName,
+          tipisName: tipisName,
         })}`}
         visible={shareVisible}
         onClose={() => setShareVisible(false)}
