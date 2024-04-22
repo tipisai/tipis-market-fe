@@ -57,3 +57,8 @@ export const backNameStyle = css`
     display: none;
   `)}
 `
+
+export const previousIconStyle = css`
+  font-size: 14px;
+  display: flex;
+`

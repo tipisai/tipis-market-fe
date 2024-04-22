@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { FC, useContext } from "react"
-import Logo from "@/assets/public/illa-logo-puple.svg?react"
+import Logo from "@/assets/public/logo.svg?react"
 import { CreateTeamButton } from "@/components/common/CreateTeamButton"
 import { NavHeaderOptions } from "@/components/common/PageNav/NavHeaderOptions"
 import { InfoContext } from "@/context/infoContext"

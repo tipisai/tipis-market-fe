@@ -22,8 +22,7 @@ export const flexStyle = css`
 `
 
 export const logoStyle = css`
-  width: 51px;
-  height: 24px;
+  height: 40px;
   flex-shrink: 0;
 `
 
