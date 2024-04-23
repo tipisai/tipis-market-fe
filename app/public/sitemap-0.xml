@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://illa.ai</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/500</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/zh-CN/500</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/ja-JP/500</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/de-DE/500</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/zh-TW/500</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/404</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/zh-CN/404</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/ja-JP/404</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/de-DE/404</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://illa.ai/zh-TW/404</loc><lastmod>2024-04-23T09:52:53.475Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/500</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/zh-CN/500</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/ja-JP/500</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/de-DE/500</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/zh-TW/500</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/404</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/zh-CN/404</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/ja-JP/404</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/de-DE/404</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>MARKET_PATH/zh-TW/404</loc><lastmod>2024-04-23T12:40:06.899Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

@@ -1,0 +1,109 @@
+name: Deploy to k8s
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+env:
+  ILLA_MIXPANEL_API_KEY: ${{ secrets.ILLA_MIXPANEL_API_KEY }}
+  ILLA_AMPLITUDE_API_KEY: ${{ secrets.ILLA_AMPLITUDE_API_KEY }}
+  ILLA_MUI_LICENSE: ${{ secrets.ILLA_MUI_LICENSE }}
+  ILLA_SENTRY_AUTH_TOKEN: ${{ secrets.ILLA_SENTRY_AUTH_TOKEN }}
+  DO_CLUSTER: ${{ secrets.DO_CLUSTER }}
+  DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+  DOCKER_PWD: ${{ secrets.DOCKER_PWD }}
+  DO_TOKEN: ${{ secrets.DO_TOKEN }}
+  ILLA_INTERCOM_APP_ID: ${{ secrets.ILLA_INTERCOM_APP_ID }}
+  ILLA_POSTHOG_KEY: ${{ secrets.ILLA_POSTHOG_KEY }}
+jobs:
+  build-docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    environment:
+      name:
+        ${{ (github.ref == 'refs/heads/main') && 'production' || (github.ref ==
+        'refs/heads/develop') && 'test' || (github.ref == 'refs/heads/beta') &&
+        'beta' }}
+    env:
+      ILLA_APP_ENV: ${{ vars.ILLA_APP_ENV }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.12.1
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8.7.0
+
+      - name: Compress tipis
+        run: |
+          tar -czvf tipisai-market-fe.gz ./Dockerfile
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: tipisai-market-fe.gz
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Load build artifacts
+        run: |
+          tar -xzvf tipisai-market-fe.gz
+
+      - name: Build Docker
+        run: |
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "Building for main branch"
+            docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud.illacloud.com" --build-arg ILLA_MARKET_URL="https://marketplace.tipis.ai" --build-arg ILLA_APP_ENV="production" --build-arg ILLA_API_BASE_URL="cloud-api.tipis.ai"
+          elif [ "$GITHUB_REF_NAME" = "develop" ]; then
+            echo "Building for develop branch"
+            docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud-test.illacloud.com"  --build-arg ILLA_MARKET_URL="https://marketplace-test.tipis.ai" --build-arg ILLA_APP_ENV="test" --build-arg ILLA_API_BASE_URL="cloud-api-test.tipis.ai"
+          else
+            echo "Not a buildable branch"
+          fi
+
+      - name: Push application Docker image
+        run: |
+          docker login -u $DOCKER_LOGIN -p $DOCKER_PWD
+          docker tag tipisai-market-fe "illasoft/tipisai-market-fe:$GITHUB_REF_NAME"
+          docker push "illasoft/tipisai-market-fe:$GITHUB_REF_NAME"
+
+  deploy:
+    needs: build-docker
+    name: Deploy to k8s
+    runs-on: ubuntu-latest
+    environment:
+      name:
+        ${{ (github.ref == 'refs/heads/main') && 'production' || (github.ref ==
+        'refs/heads/develop') && 'test' || (github.ref == 'refs/heads/beta') &&
+        'beta' }}
+    env:
+      ILLA_APP_ENV: ${{ vars.ILLA_APP_ENV }}
+    steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+
+      - name: Install kubectl
+        run: |
+          sudo snap install kubectl --classic
+
+      - name: Setup kubectl
+        run: |
+          doctl kubernetes cluster kubeconfig save $DO_CLUSTER
+          kubectl version
+      - name: Deploy to Kubernetes
+        run: |
+          echo "$ILLA_APP_ENV"
+          kubectl rollout restart deployment -n $ILLA_APP_ENV tipisai-market-fe

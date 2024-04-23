@@ -5,8 +5,6 @@ RUN npm install -g pnpm@8.11.0
 ARG ILLA_CLOUD_URL
 ENV ILLA_CLOUD_URL=$ILLA_CLOUD_URL
 
-ARG ILLA_BUILDER_URL
-ENV ILLA_BUILDER_URL=$ILLA_BUILDER_URL
 
 ARG ILLA_MARKET_URL
 ENV ILLA_MARKET_URL=$ILLA_MARKET_URL
@@ -52,5 +50,5 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-# CMD pnpm turbo run start --filter=illa-market-fe
+# CMD pnpm turbo run start --filter=tipis-market-fe
 CMD node app/server.js

@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://illa.ai
+Host: MARKET_PATH
 
 # Sitemaps
-Sitemap: https://illa.ai/sitemap.xml
-Sitemap: https://illa.ai/server-sitemap-index.xml
+Sitemap: MARKET_PATH/sitemap.xml
+Sitemap: MARKET_PATH/server-sitemap-index.xml
