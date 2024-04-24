@@ -64,10 +64,10 @@ jobs:
         run: |
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             echo "Building for main branch"
-            docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud.illacloud.com" --build-arg ILLA_MARKET_URL="https://marketplace.tipis.ai" --build-arg ILLA_APP_ENV="production" --build-arg ILLA_API_BASE_URL="cloud-api.tipis.ai"
+            docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud.tipis.ai" --build-arg ILLA_MARKET_URL="https://marketplace.tipis.ai" --build-arg ILLA_APP_ENV="production" --build-arg ILLA_API_BASE_URL="cloud-api.tipis.ai"
           elif [ "$GITHUB_REF_NAME" = "develop" ]; then
             echo "Building for develop branch"
-            docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud-test.illacloud.com"  --build-arg ILLA_MARKET_URL="https://marketplace-test.tipis.ai" --build-arg ILLA_APP_ENV="test" --build-arg ILLA_API_BASE_URL="cloud-api-test.tipis.ai"
+            docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud-test.tipis.ai"  --build-arg ILLA_MARKET_URL="https://marketplace-test.tipis.ai" --build-arg ILLA_APP_ENV="test" --build-arg ILLA_API_BASE_URL="cloud-api-test.tipis.ai"
           else
             echo "Not a buildable branch"
           fi
