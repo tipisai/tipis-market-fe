@@ -113,9 +113,9 @@ jobs:
         run: |
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             echo "Deploy for main branch"
-            cd k8s-application-do/namespace-main
-            kubectl apply -f ./tipisai-marketplace-frontend/ -n main
-            kubectl rollout restart deployment -n main tipisai-marketplace-frontend
+            cd k8s-application-do/namespace-production
+            kubectl apply -f ./tipisai-marketplace-frontend/ -n production
+            kubectl rollout restart deployment -n production tipisai-marketplace-frontend
           elif [ "$GITHUB_REF_NAME" = "develop" ]; then
             echo "Deploy for test branch"
             cd k8s-application-do/namespace-test
