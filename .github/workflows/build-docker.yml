@@ -58,7 +58,7 @@ jobs:
 
       - name: Load build artifacts
         run: |
-          echo "$ILLA_APP_ENV"
+          echo "xxxx$ILLA_APP_ENV"
           tar -xzvf tipisai-market-fe.gz
 
       - name: Build Docker
