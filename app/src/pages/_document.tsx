@@ -1,4 +1,3 @@
-import { StyleProvider, createCache, extractStyle } from "@ant-design/cssinjs"
 import createEmotionServer from "@emotion/server/create-instance"
 import { AppType } from "next/app"
 import Document, {
@@ -20,7 +19,7 @@ export default function AppDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
     <Html>
       <Head>
-        <link href="/favicon.ico" rel="icon" type="image/svg+xml" />
+        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
         <link href="/fonts/font.css" rel="stylesheet" />
         <meta
           key="twitter:card"
@@ -31,13 +30,9 @@ export default function AppDocument({ emotionStyleTags }: MyDocumentProps) {
         <meta
           key="twitter:image"
           name="twitter:image"
-          content="https://cdn.illacloud.com/illa.ai/Site%20cover%20ai.png"
+          content="/social-media.png"
         />
-        <meta
-          key="og:image"
-          property="og:image"
-          content="https://cdn.illacloud.com/illa.ai/Site%20cover%20ai.png"
-        />
+        <meta key="og:image" property="og:image" content="/social-media.png" />
         <meta
           name="google-site-verification"
           content="-cJKBQ7OQc_sl4xC_69ng8Oq1SMf4MXpiRZybJPqtqw"
@@ -55,7 +50,6 @@ export default function AppDocument({ emotionStyleTags }: MyDocumentProps) {
 AppDocument.getInitialProps = async (ctx: DocumentContext) => {
   const originalRenderPage = ctx.renderPage
   const cache = createEmotionCache()
-  const antdCache = createCache()
   const { extractCriticalToChunks } = createEmotionServer(cache)
 
   ctx.renderPage = () =>
@@ -64,34 +58,23 @@ AppDocument.getInitialProps = async (ctx: DocumentContext) => {
         App: React.ComponentType<React.ComponentProps<AppType> & MyAppProps>,
       ) =>
         function EnhanceApp(props) {
-          return (
-            <StyleProvider cache={antdCache}>
-              <App emotionCache={cache} {...props} />
-            </StyleProvider>
-          )
+          return <App emotionCache={cache} {...props} />
         },
     })
 
   const initialProps = await Document.getInitialProps(ctx)
   const emotionStyles = extractCriticalToChunks(initialProps.html)
-  const antdCacheStyle = extractStyle(antdCache, true)
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(" ")}`}
       key={style.key}
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: `${style.css}` }}
+      dangerouslySetInnerHTML={{ __html: style.css }}
     />
   ))
 
   return {
     ...initialProps,
     emotionStyleTags,
-    styles: (
-      <>
-        {initialProps.styles}
-        <style dangerouslySetInnerHTML={{ __html: antdCacheStyle }} />
-      </>
-    ),
   }
 }

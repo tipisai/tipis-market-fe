@@ -25,7 +25,6 @@ export const headerStyle = css`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 220px;
   overflow: hidden;
   border-radius: 16px;
   position: relative;
@@ -37,14 +36,12 @@ export const headerStyle = css`
 `
 
 export const agentIconStyle = css`
-  object-fit: cover;
   width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: -1;
 `
 
 export const teamInfoContainerStyle = css`
+  position: absolute;
+  top: 0;
   display: flex;
   width: 100%;
   height: 64px;
@@ -92,6 +89,8 @@ export const teamNameStyle = css`
 
 export const actionContainerStyle = css`
   display: flex;
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: 64px;
   padding: 16px;
