@@ -103,7 +103,24 @@ jobs:
         run: |
           doctl kubernetes cluster kubeconfig save $DO_CLUSTER
           kubectl version
+      - uses: actions/checkout@v4
+        with:
+          repository: tipisai/k8s-application-do
+          token: ${{ secrets.MARKET_TEMP_TOKEN }}
+          path: k8s-application-do
+
       - name: Deploy to Kubernetes
         run: |
-          echo "$ILLA_APP_ENV"
-          kubectl rollout restart deployment -n $ILLA_APP_ENV tipisai-market-fe
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "Deploy for main branch"
+            cd k8s-application-do/namespace-main
+            kubectl apply -f ./tipisai-marketplace-frontend/ -n main
+            kubectl rollout restart deployment -n main tipisai-marketplace-frontend
+          elif [ "$GITHUB_REF_NAME" = "develop" ]; then
+            echo "Deploy for test branch"
+            cd k8s-application-do/namespace-test
+            kubectl apply -f ./tipisai-marketplace-frontend/ -n test
+            kubectl rollout restart deployment -n test tipisai-marketplace-frontend
+          else
+            echo "Not a buildable branch"
+          fi
