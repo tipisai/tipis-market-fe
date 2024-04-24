@@ -103,7 +103,13 @@ jobs:
         run: |
           doctl kubernetes cluster kubeconfig save $DO_CLUSTER
           kubectl version
+      - uses: actions/checkout@v4
+        with:
+          repository: illacloud/k8s-application-do
+          path: k8s-application-do
+
       - name: Deploy to Kubernetes
         run: |
-          echo "$ILLA_APP_ENV"
+          cd k8s-application-do/namespace-$ILLA_APP_ENV
+          kubectl apply -f ./tipisai-marketplace-frontend/ -n $ILLA_APP_ENV
           kubectl rollout restart deployment -n $ILLA_APP_ENV tipisai-market-fe
