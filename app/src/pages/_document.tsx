@@ -1,3 +1,4 @@
+import { StyleProvider, createCache, extractStyle } from "@ant-design/cssinjs"
 import createEmotionServer from "@emotion/server/create-instance"
 import { AppType } from "next/app"
 import Document, {
@@ -54,6 +55,7 @@ export default function AppDocument({ emotionStyleTags }: MyDocumentProps) {
 AppDocument.getInitialProps = async (ctx: DocumentContext) => {
   const originalRenderPage = ctx.renderPage
   const cache = createEmotionCache()
+  const antdCache = createCache()
   const { extractCriticalToChunks } = createEmotionServer(cache)
 
   ctx.renderPage = () =>
@@ -62,23 +64,34 @@ AppDocument.getInitialProps = async (ctx: DocumentContext) => {
         App: React.ComponentType<React.ComponentProps<AppType> & MyAppProps>,
       ) =>
         function EnhanceApp(props) {
-          return <App emotionCache={cache} {...props} />
+          return (
+            <StyleProvider cache={antdCache}>
+              <App emotionCache={cache} {...props} />
+            </StyleProvider>
+          )
         },
     })
 
   const initialProps = await Document.getInitialProps(ctx)
   const emotionStyles = extractCriticalToChunks(initialProps.html)
+  const antdCacheStyle = extractStyle(antdCache, true)
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(" ")}`}
       key={style.key}
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: style.css }}
+      dangerouslySetInnerHTML={{ __html: `${style.css}` }}
     />
   ))
 
   return {
     ...initialProps,
     emotionStyleTags,
+    styles: (
+      <>
+        {initialProps.styles}
+        <style dangerouslySetInnerHTML={{ __html: antdCacheStyle }} />
+      </>
+    ),
   }
 }
