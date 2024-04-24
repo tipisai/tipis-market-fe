@@ -80,7 +80,7 @@ export const SortComponentPC: FC<ContentHeaderProps> = ({ tagList }) => {
           items={options}
         />
         <Checkbox checked={marketState.isOfficial} onChange={onOfficialChange}>
-          {t("_Official")}
+          {t("official")}
         </Checkbox>
       </div>
       {!!showCurrentTag ? (
