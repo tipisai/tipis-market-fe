@@ -55,9 +55,7 @@ const AgentDetailPage: FC<AgentDetailServerSideProps> = (props) => {
       <ContributeInfo
         teamName={agentDetail?.marketplace?.contributorTeam?.name}
         teamAvatar={agentDetail?.marketplace?.contributorTeam?.icon}
-        contributorAvatars={agentDetail?.aiAgent?.editedBy.map(
-          (item) => item.avatar,
-        )}
+        contributors={agentDetail?.aiAgent?.editedBy}
       />
 
       {agentDetail.marketplace.config.publishConfiguration && (
