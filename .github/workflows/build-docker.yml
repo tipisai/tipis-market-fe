@@ -64,12 +64,9 @@ jobs:
         run: |
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             echo "Building for main branch"
-            echo "export ILLA_APP_ENV=production" >> "$BASH_ENV"
             docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud.tipis.ai" --build-arg ILLA_MARKET_URL="https://marketplace.tipis.ai" --build-arg ILLA_APP_ENV="production" --build-arg ILLA_API_BASE_URL="cloud-api.tipis.ai"
           elif [ "$GITHUB_REF_NAME" = "develop" ]; then
             echo "Building for develop branch"
-            echo "export ILLA_APP_ENV=test" >> "$BASH_ENV"
-            echo "xxx$ILLA_APP_ENV"
             docker build --cache-from=tipisai-market-fe -f Dockerfile -t tipisai-market-fe . --build-arg ILLA_CLOUD_URL="https://cloud-test.tipis.ai"  --build-arg ILLA_MARKET_URL="https://marketplace-test.tipis.ai" --build-arg ILLA_APP_ENV="test" --build-arg ILLA_API_BASE_URL="cloud-api-test.tipis.ai"
           else
             echo "Not a buildable branch"
@@ -114,6 +111,16 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          cd k8s-application-do/namespace-$ILLA_APP_ENV
-          kubectl apply -f ./tipisai-marketplace-frontend/ -n $ILLA_APP_ENV
-          kubectl rollout restart deployment -n $ILLA_APP_ENV tipisai-market-fe
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "Deploy for main branch"
+            cd k8s-application-do/namespace-main
+            kubectl apply -f ./tipisai-marketplace-frontend/ -n main
+            kubectl rollout restart deployment -n main tipisai-market-fe
+          elif [ "$GITHUB_REF_NAME" = "develop" ]; then
+            echo "Deploy for test branch"
+            cd k8s-application-do/namespace-test
+            kubectl apply -f ./tipisai-marketplace-frontend/ -n test
+            kubectl rollout restart deployment -n test tipisai-market-fe
+          else
+            echo "Not a buildable branch"
+          fi
