@@ -54,7 +54,7 @@ export const ActionGroup: FC<OperationalProps> = ({
 
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { userInfo, isMobile, setUserInfo } = useContext(InfoContext)
+  const { userInfo, setUserInfo } = useContext(InfoContext)
 
   const [pinLoading, setPinLoading] = useState(false)
   const [runLoading, setRunLoading] = useState(false)
@@ -124,7 +124,7 @@ export const ActionGroup: FC<OperationalProps> = ({
           personalization,
         })
       } catch (e) {
-        message.error(t("_pin error"))
+        message.error(t("pin_error"))
       }
     },
     [
@@ -311,7 +311,7 @@ export const ActionGroup: FC<OperationalProps> = ({
               loading={pinLoading}
               icon={<Icon component={PinIcon} />}
             >
-              <span>{t("_pin")}</span>
+              <span>{t("pin")}</span>
             </Button>
           </Popover>
 

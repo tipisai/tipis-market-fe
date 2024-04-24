@@ -86,7 +86,7 @@ export const SortComponentMobile: FC<ContentHeaderProps> = ({ tagList }) => {
           centered
         />
         <Checkbox checked={marketState.isOfficial} onChange={onOfficialChange}>
-          {t("_Official")}
+          {t("official")}
         </Checkbox>
       </div>
       {!!showCurrentTag ? (

@@ -17,7 +17,7 @@ export const PinContent: FC<TeamSelectModalProps> = (props) => {
 
   return (
     <>
-      <span css={titleStyle}>{t("_title")}</span>
+      <span css={titleStyle}>{t("pin_multi_team_title")}</span>
       {teamItems.map(({ id, name, icon }) => {
         const isPin =
           Array.isArray(pinedTipisTabs?.[id]) &&
