@@ -13,7 +13,10 @@ import { PRODUCT_SORT_BY } from "@/interface/common"
 import { ContentHeaderProps } from "../interface"
 import { sortHeaderStyle, sortWrapperStyle } from "./style"
 
-export const SortComponentPC: FC<ContentHeaderProps> = ({ tagList }) => {
+export const SortComponentPC: FC<ContentHeaderProps> = ({
+  tagList,
+  showRecommendTag,
+}) => {
   const { t } = useTranslation()
   const router = useRouter()
   const options = [
@@ -86,6 +89,7 @@ export const SortComponentPC: FC<ContentHeaderProps> = ({ tagList }) => {
       {!!showCurrentTag ? (
         <SingleTag onCloseTag={handleCloseSingleTag} />
       ) : (
+        showRecommendTag &&
         tagList &&
         tagList.length > 0 && (
           <TagList

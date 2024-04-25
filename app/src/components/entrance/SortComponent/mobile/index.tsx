@@ -18,7 +18,10 @@ import {
   tagContainerStyle,
 } from "./style"
 
-export const SortComponentMobile: FC<ContentHeaderProps> = ({ tagList }) => {
+export const SortComponentMobile: FC<ContentHeaderProps> = ({
+  tagList,
+  showRecommendTag,
+}) => {
   const searchParams = useSearchParams()
   const showCurrentTag = searchParams.get(SEARCH_KEY.CURRENT_HASH_TAG)
   const { t } = useTranslation()
@@ -94,15 +97,17 @@ export const SortComponentMobile: FC<ContentHeaderProps> = ({ tagList }) => {
           <SingleTag onCloseTag={handleCloseSingleTag} />
         </div>
       ) : (
-        <div css={tagContainerStyle}>
-          {tagList && tagList.length > 0 && (
+        showRecommendTag &&
+        tagList &&
+        tagList.length > 0 && (
+          <div css={tagContainerStyle}>
             <TagList
               tagList={tagList}
               handleTagChange={onTagChange}
               activeTag={marketState.hashTag}
             />
-          )}
-        </div>
+          </div>
+        )
       )}
     </div>
   )

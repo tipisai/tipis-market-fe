@@ -69,7 +69,7 @@ const Entrance: FC<IEntranceProps> = ({ listData }) => {
   return (
     <div css={contentStyle} onScroll={handleListLoadMore}>
       <Banner />
-      <SortComponent tagList={tagList} />
+      <SortComponent tagList={tagList} showRecommendTag={showRecommendTag} />
       {isLoading && !isMoreLoading ? (
         <ListLoading />
       ) : !Array.isArray(currentListResponse?.products) ||
