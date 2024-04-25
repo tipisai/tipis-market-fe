@@ -89,7 +89,7 @@ export const SortComponentPC: FC<ContentHeaderProps> = ({
       {!!showCurrentTag ? (
         <SingleTag onCloseTag={handleCloseSingleTag} />
       ) : (
-        showRecommendTag &&
+        !showRecommendTag &&
         tagList &&
         tagList.length > 0 && (
           <TagList

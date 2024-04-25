@@ -97,7 +97,7 @@ export const SortComponentMobile: FC<ContentHeaderProps> = ({
           <SingleTag onCloseTag={handleCloseSingleTag} />
         </div>
       ) : (
-        showRecommendTag &&
+        !showRecommendTag &&
         tagList &&
         tagList.length > 0 && (
           <div css={tagContainerStyle}>

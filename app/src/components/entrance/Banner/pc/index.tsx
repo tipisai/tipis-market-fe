@@ -3,7 +3,14 @@ import { SearchIcon } from "@illa-public/icon"
 import { Input } from "antd"
 import { debounce } from "lodash-es"
 import { useTranslation } from "next-i18next"
-import { ChangeEvent, FC, useCallback, useContext, useMemo } from "react"
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react"
 import { DASH_BOARD_UI_STATE_ACTION_TYPE } from "@/context/getListContext/interface"
 import { DashBoardUIStateContext } from "@/context/getListContext/listContext"
 import {
@@ -18,6 +25,7 @@ export const BannerPC: FC = () => {
   const { t } = useTranslation()
 
   const { dispatch, dashboardUIState } = useContext(DashBoardUIStateContext)
+  const [searchValue, setSearchValue] = useState(dashboardUIState.search)
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +41,14 @@ export const BannerPC: FC = () => {
   const debounceHandleChange = useMemo(() => {
     return debounce(handleChange, 160)
   }, [handleChange])
+
+  const handleChangeSearchValue = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(e.target.value)
+      debounceHandleChange(e)
+    },
+    [debounceHandleChange],
+  )
 
   return (
     <div css={headerStyle}>
@@ -55,9 +71,9 @@ export const BannerPC: FC = () => {
           },
         }}
         prefix={<Icon component={SearchIcon} css={searchIconStyle} />}
-        value={dashboardUIState.search}
+        value={searchValue}
         placeholder={t("dashboard.search")}
-        onChange={debounceHandleChange}
+        onChange={handleChangeSearchValue}
       />
     </div>
   )

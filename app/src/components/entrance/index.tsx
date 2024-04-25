@@ -38,6 +38,8 @@ const Entrance: FC<IEntranceProps> = ({ listData }) => {
     isLoading,
   )
 
+  console.log(showRecommendTag, tagList)
+
   const handleListLoadMore = async (event: UIEvent<HTMLDivElement>) => {
     if (
       isLoading ||
