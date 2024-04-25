@@ -17,6 +17,7 @@ env:
   DO_TOKEN: ${{ secrets.DO_TOKEN }}
   ILLA_INTERCOM_APP_ID: ${{ secrets.ILLA_INTERCOM_APP_ID }}
   ILLA_POSTHOG_KEY: ${{ secrets.ILLA_POSTHOG_KEY }}
+  ILLA_BOT_TOKEN: ${{ secrets.ILLA_BOT_TOKEN }}
 jobs:
   build-docker:
     name: Build Docker image
@@ -106,7 +107,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: tipisai/k8s-application-do
-          token: ${{ secrets.MARKET_TEMP_TOKEN }}
+          token: ${{ secrets.ILLA_BOT_TOKEN }}
           path: k8s-application-do
 
       - name: Deploy to Kubernetes
