@@ -107,7 +107,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: tipisai/k8s-application-do
-          token: $ILLA_BOT_TOKEN
+          token: ${{ secrets.ILLA_BOT_TOKEN }}
           path: k8s-application-do
 
       - name: Deploy to Kubernetes
