@@ -28,7 +28,7 @@ export const useGetShowData = (
       } else if (hashTag) {
         return [hashTag]
       } else {
-        return []
+        return recommendHashtags
       }
     } else {
       return recommendHashtags
