@@ -18,16 +18,3 @@ export const otherActionsStyle = css`
   display: flex;
   gap: 8px;
 `
-
-export const runButtonAreaStyle = css`
-  display: flex;
-  width: 307px;
-
-  ${applyMobileStyle(css`
-    width: 100%;
-  `)}
-`
-
-export const numStyle = css`
-  margin-left: 4px;
-`
