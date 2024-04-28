@@ -35,6 +35,9 @@
       },
       "tab": {
         "with_team": "Mit Teammitgliedern teilen"
+      },
+      "link":{
+        "copy":"Link kopieren"
       }
     }
   },
