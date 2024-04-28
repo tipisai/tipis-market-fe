@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     agentSiteMap = (agentListResponse as IMarketAgentListData).products.map(
       (agent) => {
         return {
-          loc: `${process.env.ILLA_MARKET_URL}/ai-agent/${agent.aiAgent?.aiAgentID}/detail`,
+          loc: `${process.env.ILLA_MARKET_URL}/tipis/${agent.aiAgent?.aiAgentID}/detail`,
           lastmod: new Date().toISOString(),
         }
       },
