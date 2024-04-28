@@ -192,7 +192,7 @@ export const ActionGroup: FC<OperationalProps> = ({
   }, [checkLoginAndRedirect, ownerTeamIdentity, tipisID])
 
   const handlePin = useCallback(async () => {
-    const isLogin = checkLoginAndRedirect(OPERATE_TYPE.FORK)
+    const isLogin = checkLoginAndRedirect(OPERATE_TYPE.PIN)
     if (!isLogin) return
     setPinLoading(true)
     let res, teamItems
