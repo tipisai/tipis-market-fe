@@ -3,7 +3,7 @@ import { getServerSideSitemapIndexLegacy } from "next-sitemap"
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return getServerSideSitemapIndexLegacy(ctx, [
-    `${process.env.ILLA_MARKET_URL}/agent-sitemap.xml`,
+    `${process.env.ILLA_MARKET_URL}/tipis-sitemap.xml`,
   ])
 }
 
