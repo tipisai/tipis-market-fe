@@ -1,6 +1,6 @@
 FROM node:18-alpine AS base
 RUN npm install -g pm2
-RUN npm install -g pnpm@8.11.0
+RUN npm install -g pnpm@9.0.6
 
 ARG ILLA_CLOUD_URL
 ENV ILLA_CLOUD_URL=$ILLA_CLOUD_URL

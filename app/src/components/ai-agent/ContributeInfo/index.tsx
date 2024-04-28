@@ -18,6 +18,7 @@ const ContributeInfo: FC<IContributeInfoProps> = (props) => {
     teamName,
     contributeLabelName = "Contributor",
   } = props
+
   return (
     <div css={contributeContainerStyle}>
       <div css={teamInfoContainerStyle}>
@@ -33,7 +34,7 @@ const ContributeInfo: FC<IContributeInfoProps> = (props) => {
           <Avatar.Group>
             {contributors.map(({ avatar, userID, nickname }) => (
               <Avatar
-                src={avatar}
+                src={!!avatar ? avatar : undefined}
                 shape="circle"
                 size={32}
                 key={avatar}
