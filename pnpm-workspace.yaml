@@ -4,4 +4,3 @@ packages:
   - "packages/utils/*"
   - "packages/components/*"
   - "packages/others/*"
-  - "packages/illa-design/*"
