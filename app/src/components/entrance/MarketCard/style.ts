@@ -165,11 +165,13 @@ export const descriptionStyle = css`
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
+  width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  word-break: break-all;
 `
 
 export const officialIconStyle = css`
